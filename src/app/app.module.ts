@@ -16,6 +16,7 @@ import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { MiniTileComponent } from './mini-tile/mini-tile.component';
+import { CreateNewTileComponent } from './create-new-tile/create-new-tile.component';
 
 
 
@@ -25,7 +26,8 @@ import { MiniTileComponent } from './mini-tile/mini-tile.component';
     HomeComponent,
     LogInComponent,
     SearchBarComponent,
-    MiniTileComponent
+    MiniTileComponent,
+    CreateNewTileComponent
   ],
   imports: [
     BrowserModule,
