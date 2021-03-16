@@ -8,7 +8,7 @@ import { ITask } from '../models';
 })
 export class HomeComponent implements OnInit {
 
-  public tasks: ITask[] = [{} as ITask, {} as ITask]
+  public tasks: ITask[] = [{} as ITask, {} as ITask, {} as ITask, {} as ITask, {} as ITask, {} as ITask, {} as ITask]
 
   constructor() { }
 
