@@ -17,6 +17,9 @@ import { LogInComponent } from './log-in/log-in.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { MiniTileComponent } from './mini-tile/mini-tile.component';
 import { CreateNewTileComponent } from './create-new-tile/create-new-tile.component';
+import { ActionsBarComponent } from './actions-bar/actions-bar.component';
+import { CREATE_NEW_TASK_MEDIATOR } from './actions.mediator';
+import { Subject } from 'rxjs';
 
 
 
@@ -27,7 +30,8 @@ import { CreateNewTileComponent } from './create-new-tile/create-new-tile.compon
     LogInComponent,
     SearchBarComponent,
     MiniTileComponent,
-    CreateNewTileComponent
+    CreateNewTileComponent,
+    ActionsBarComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +43,9 @@ import { CreateNewTileComponent } from './create-new-tile/create-new-tile.compon
     FormsModule,
     MatIconModule
   ],
-  providers: [],
+  providers: [
+    { provide: CREATE_NEW_TASK_MEDIATOR, useValue: new Subject<undefined>() }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
