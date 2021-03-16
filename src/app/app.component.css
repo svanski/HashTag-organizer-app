@@ -1,0 +1,10 @@
+mat-card {
+  height: 40px;
+  background-color: pink;
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-size: x-large;
+}
+
+#search-container {
+  margin: 20px;
+}
