@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
+import { MiniTileComponent } from './mini-tile/mini-tile.component';
 
 
 
@@ -23,7 +24,8 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     AppComponent,
     HomeComponent,
     LogInComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    MiniTileComponent
   ],
   imports: [
     BrowserModule,
