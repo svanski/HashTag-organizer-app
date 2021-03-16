@@ -16,11 +16,11 @@ import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { MiniTileComponent } from './mini-tile/mini-tile.component';
-import { CreateNewTileComponent } from './create-new-tile/create-new-tile.component';
 import { ActionsBarComponent } from './actions-bar/actions-bar.component';
-import { CREATE_NEW_TASK_MEDIATOR } from './actions.mediator';
-import { Subject } from 'rxjs';
 
+import { CREATE_NEW_TASK_MEDIATOR } from './actions.mediator';
+
+import { Subject } from 'rxjs';
 
 
 @NgModule({
@@ -30,7 +30,6 @@ import { Subject } from 'rxjs';
     LogInComponent,
     SearchBarComponent,
     MiniTileComponent,
-    CreateNewTileComponent,
     ActionsBarComponent
   ],
   imports: [
