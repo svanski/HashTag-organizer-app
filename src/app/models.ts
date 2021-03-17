@@ -1,11 +1,14 @@
 export interface ITask {
     hashTags: string[],
-    titile: string,
-    description: string,
-    startDate: Date,
-    dueDate: Date,
+    title: string | null,
+    description: string | null,
+    startDate: Date | null,
+    dueDate: Date | null,
     assignee: string[],
-    assigner: string[],
+    attachements: [],
+    comments: IComment[],
+    lastModifyDate: Date,
+    lastModifyUser: string,
 }
 
 export interface IUser {
@@ -13,4 +16,10 @@ export interface IUser {
     email: string,
     name: string,
     selected: boolean
+}
+
+export interface IComment {
+    user: IUser,
+    message: string,
+    date: Date;
 }

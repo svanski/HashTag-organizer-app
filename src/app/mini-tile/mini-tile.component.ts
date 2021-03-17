@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { EMPTY, Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { IUser } from '../models';
+import { ITask, IUser } from '../models';
 
 
 @Component({
@@ -11,6 +11,8 @@ import { IUser } from '../models';
   styleUrls: ['./mini-tile.component.css']
 })
 export class MiniTileComponent implements OnInit {
+
+  @Input('task') public task: ITask | undefined;
 
   public taskDescription: string = ''
   public startDate: any;
@@ -37,6 +39,9 @@ export class MiniTileComponent implements OnInit {
         map((value: any) => typeof value === 'string' ? value : (value as IUser).name),
         map(name => name ? this._filter(name) : this.options.slice())
       );
+
+    console.log('TASK+', this.task);
+
   }
 
 

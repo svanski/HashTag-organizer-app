@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CREATE_NEW_TASK_MEDIATOR } from '../actions.mediator';
 import { ITask } from '../models';
+import { createTask } from '../models.factory';
 
 @Component({
   selector: 'app-home',
@@ -10,10 +11,15 @@ import { ITask } from '../models';
 })
 export class HomeComponent implements OnInit {
 
-  public tasks: ITask[] = [{} as ITask, {} as ITask, {} as ITask, {} as ITask, {} as ITask, {} as ITask, {} as ITask]
+  public tasks: ITask[] = []
 
   constructor(@Inject(CREATE_NEW_TASK_MEDIATOR) private createNewTaskMediator: Observable<undefined>) {
-    this.createNewTaskMediator.subscribe(v => { this.tasks.push({} as ITask) });
+    this.createNewTaskMediator.subscribe(v => {
+
+      const t = createTask();
+      t.lastModifyUser = "Dachi";
+      this.tasks.push(t)
+    });
   }
 
   ngOnInit(): void {
