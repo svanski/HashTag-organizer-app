@@ -5,14 +5,9 @@
   align-content: flex-start;
 }
 
-#crete-new-tile {
-  margin: auto;
-  width: 30%;
-  height: 400px;
-}
-
 .task-tile {
   margin: auto;
   width: 30%;
+  min-width: 270px;
   height: 400px;
 }

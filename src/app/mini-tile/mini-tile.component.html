@@ -1,7 +1,7 @@
 <mat-card class="flex-v" style="margin: auto; height: 90%;">
 
+  <!-- TITLE -->
   <div class='flex-h flex-space-in-between flex-v-center'>
-
     <mat-form-field style="width: 80%;">
       <mat-label>Task Description</mat-label>
       <input matInput [(ngModel)]="taskDescription">
@@ -10,6 +10,60 @@
     <button mat-mini-fab color='primary' aria-label="Open Task">
       <mat-icon>open_in_new</mat-icon>
     </button>
+  </div>
+
+  <!-- DATE -->
+  <div>
+    <mat-form-field appearance="fill" style="margin-right: 20px;">
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="startdatepicker" [(ngModel)]="startDate">
+      <mat-datepicker-toggle matSuffix [for]="startdatepicker"></mat-datepicker-toggle>
+      <mat-datepicker #startdatepicker>
+        <mat-datepicker-actions>
+          <button mat-button matDatepickerCancel>Cancel</button>
+          <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="example-form-field">
+      <mat-label>End Date</mat-label>
+      <input matInput [matDatepicker]="enddatepicker" [(ngModel)]="endDate">
+      <mat-datepicker-toggle matSuffix [for]="enddatepicker"></mat-datepicker-toggle>
+      <mat-datepicker #enddatepicker>
+        <mat-datepicker-actions>
+          <button mat-button matDatepickerCancel>Cancel</button>
+          <button mat-raised-button color="primary" matDatepickerApply (click)='push()'>Apply</button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <!-- ASSIGNEE -->
+  <form>
+    <mat-form-field>
+      <mat-label>Assignee(s)</mat-label>
+      <input type="text" matInput [formControl]="assigneeFormControl" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{option.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+
+  <!-- DESCRIPTION -->
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Task Description</mat-label>
+    <textarea matInput></textarea>
+  </mat-form-field>
+
+  <div class='flex-h flex-space-in-between flex-v-center'>
+
+    <div matBadge="4" matBadgeSize='small' matBadgeOverlap="false">Attached Documents</div>
+    <div matBadge="4" matBadgeSize='small' matBadgeOverlap="false">Comments</div>
+    <div style="margin-right: 20px" matBadge="4" matBadgeSize='small' matBadgeOverlap="false">Tags</div>
+
   </div>
 
 
