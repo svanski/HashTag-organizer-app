@@ -7,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MiniTileComponent implements OnInit {
 
-  
+  public taskDescription: string = ''
+
 
   constructor() { }
 

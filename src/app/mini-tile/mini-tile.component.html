@@ -1,1 +1,16 @@
-<mat-card style="margin: auto; height: 90%;">Mini Task</mat-card>
+<mat-card class="flex-v" style="margin: auto; height: 90%;">
+
+  <div class='flex-h flex-space-in-between flex-v-center'>
+
+    <mat-form-field style="width: 80%;">
+      <mat-label>Task Description</mat-label>
+      <input matInput [(ngModel)]="taskDescription">
+    </mat-form-field>
+
+    <button mat-mini-fab color='primary' aria-label="Open Task">
+      <mat-icon>open_in_new</mat-icon>
+    </button>
+  </div>
+
+
+</mat-card>

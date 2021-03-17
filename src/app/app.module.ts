@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatDividerModule } from '@angular/material/divider';
 
 import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './log-in/log-in.component';
@@ -40,7 +40,8 @@ import { Subject } from 'rxjs';
     MatButtonModule,
     MatInputModule,
     FormsModule,
-    MatIconModule
+    MatIconModule,
+    MatDividerModule
   ],
   providers: [
     { provide: CREATE_NEW_TASK_MEDIATOR, useValue: new Subject<undefined>() }

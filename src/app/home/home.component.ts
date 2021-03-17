@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   public tasks: ITask[] = [{} as ITask, {} as ITask, {} as ITask, {} as ITask, {} as ITask, {} as ITask, {} as ITask]
 
   constructor(@Inject(CREATE_NEW_TASK_MEDIATOR) private createNewTaskMediator: Observable<undefined>) {
-    this.createNewTaskMediator.subscribe(v => console.log('MEDIATOR SAYS HI', v));
+    this.createNewTaskMediator.subscribe(v => { this.tasks.push({} as ITask) });
   }
 
   ngOnInit(): void {

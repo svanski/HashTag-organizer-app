@@ -15,6 +15,21 @@ body {
   flex-direction: row;
 }
 
+.flex-v {
+  display: flex;
+  flex-direction: column;
+}
+
 .flex-space-in-between {
   justify-content: space-between;
+}
+
+.flex-v-center {
+  align-items: center;
+}
+
+mat-mini-fab {
+  min-width: 1%;
+  width: 10px;
+  transform: scale(-2);
 }
