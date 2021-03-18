@@ -8,7 +8,7 @@ export interface ITask {
     attachements: [],
     comments: IComment[],
     lastModifyDate: Date,
-    lastModifyUserEmail: string,
+    lastModifyUserEmail: string
 }
 
 export interface IUser {

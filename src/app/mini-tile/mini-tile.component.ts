@@ -24,9 +24,9 @@ export class MiniTileComponent implements OnInit {
 
   public assigneeFormControl: FormControl = new FormControl();
   public options: IUser[] = [
-    { id: 0, email: '', name: 'Mary', selected: false },
-    { id: 1, email: '', name: 'Shelley', selected: false },
-    { id: 2, email: '', name: 'Igor', selected: false }
+    { id: 0, email: 'Mary@cerb', name: 'Mary', selected: false },
+    { id: 1, email: 'Shelley@cerb', name: 'Shelley', selected: false },
+    { id: 2, email: 'Igor@cerb', name: 'Igor', selected: false }
   ];
 
   public filteredOptions: Observable<IUser[]> = EMPTY;
@@ -53,7 +53,10 @@ export class MiniTileComponent implements OnInit {
 
 
 
-    this.taskState$ = this.objectStateManager$.pipe(tap(v => console.log('State:', v)), scan((changes: any, value: ITask) => this.taskUpdated(changes, value), this.task), shareReplay(1));
+    this.taskState$ = this.objectStateManager$.pipe(tap(v => console.log('DEBUG 0:', v)), scan((value: ITask, changes: any) => this.taskUpdated(changes, value), this.task), shareReplay(1));
+
+    console.log('mini component constructed', this.task);
+
   }
 
   public displayFn(user: any): string {
@@ -65,36 +68,48 @@ export class MiniTileComponent implements OnInit {
   }
 
   private taskUpdated(change: any, task: ITask): ITask {
+    const clone: ITask = { ...task, ...change, lastModifyDate: new Date(), lastModifyUserEmail: this.userService.getCurrentUser().email }
 
-    const freshObject = { ...task, ...change, lastModifyDate: new Date(), lastModifyUserEmail: this.userService.getCurrentUser().email }
     for (let key of Object.keys(change)) {
-
-      if (key in ['hashTags', 'comments', 'description', 'title']) {
-        continue;
-      }
-
-
-      if (key === 'assignee') {
-        const assigneePrefix = '#assignee';
-        const newAssigneeHashs = freshObject.assignee.map((name: string) => `${assigneePrefix}-${name}`);
-        freshObject.hashTags = newAssigneeHashs.concat(freshObject.hashTags.filter((val: string) => !val.startsWith(assigneePrefix)));
-      } else {
-
-        const prefix = `#${key}`;
-
-        freshObject.hashTags = freshObject.hashTags.filter((val: string) => !val.startsWith(prefix));
-        const missingVlaue = freshObject[key] === null || freshObject[key] === undefined;
-        if (!missingVlaue) {
-          freshObject.hashTags.push(`${prefix}-${freshObject[key]}`);
-        }
-
-      }
+      clone.hashTags = this.handleProperty(clone, key as any);
     }
 
-    const res: ITask = freshObject;
-    res.hashTags = res.hashTags.sort((a, b) => a > b ? 1 : -1)
-    return res;
+    clone.hashTags = clone.hashTags.sort((a, b) => a > b ? 1 : -1);
 
+    return clone;
+  }
+
+  private handleProperty(obj: ITask, key: keyof ITask): string[] {
+
+    if (['hashTags', 'comments', 'description', 'title'].includes(key)) {
+      return obj.hashTags;
+    }
+
+    if (key === 'assignee') {
+      const assigneePrefix = '#assignee';
+      const newAssigneeHashs = obj.assignee.map((name: string) => `${assigneePrefix}-${name}`);
+      const res = newAssigneeHashs.concat(obj.hashTags.filter((val: string) => !val.startsWith(assigneePrefix)));
+
+      return res;
+    }
+
+    const prefix = `#${key}`;
+    const res = obj.hashTags.filter((val: string) => !val.startsWith(prefix));
+
+    const propValueMissing = (obj[key] !== typeof Boolean && !obj[key])
+      || (obj[key] && obj[key] === typeof [] && (obj[key] as []).length === 0);
+
+    if (propValueMissing) {
+      return res;
+    }
+
+    let newHashTag = `${prefix}-${obj[key]}`;
+    if (obj[key] === typeof Date) {
+      const date: Date = obj[key] as Date;
+      newHashTag = `${prefix}-${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+    }
+    res.push(newHashTag);
+    return res;
   }
 
   private _filter(name: string): any[] {

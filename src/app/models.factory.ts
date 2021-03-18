@@ -4,7 +4,7 @@ export function createTask(): ITask {
     return {
         title: '',
         hashTags: [],
-        description: null,
+        description: '',
         startDate: null,
         dueDate: null,
         assignee: [],
