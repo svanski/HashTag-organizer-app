@@ -2,7 +2,7 @@ import { ITask } from "./models";
 
 export function createTask(): ITask {
     return {
-        title: null,
+        title: '',
         hashTags: [],
         description: null,
         startDate: null,
@@ -10,7 +10,7 @@ export function createTask(): ITask {
         assignee: [],
         attachements: [],
         comments: [],
-        lastModifyUser: "Dachi",
+        lastModifyUserEmail: "Dachi",
         lastModifyDate: new Date()
     }
 }

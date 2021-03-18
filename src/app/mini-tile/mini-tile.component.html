@@ -4,7 +4,8 @@
   <div class='flex-h flex-space-in-between flex-v-center'>
     <mat-form-field style="width: 80%;">
       <mat-label>Task Description</mat-label>
-      <input matInput [(ngModel)]="taskDescription">
+      <input matInput [value]='(taskState$ | async)?.title' #descriptionInput
+        (keyup)='objectStateManager$.next( { title:descriptionInput.value } )'>
     </mat-form-field>
 
     <button mat-mini-fab color='primary' aria-label="Open Task">
@@ -21,19 +22,21 @@
       <mat-datepicker #startdatepicker>
         <mat-datepicker-actions>
           <button mat-button matDatepickerCancel>Cancel</button>
-          <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+          <button mat-raised-button color="primary" matDatepickerApply
+            (click)='objectStateManager$.next( { startDate:startDate } )'>Apply</button>
         </mat-datepicker-actions>
       </mat-datepicker>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="example-form-field">
       <mat-label>End Date</mat-label>
-      <input matInput [matDatepicker]="enddatepicker" [(ngModel)]="endDate">
+      <input matInput [matDatepicker]="enddatepicker" [(ngModel)]="dueDate">
       <mat-datepicker-toggle matSuffix [for]="enddatepicker"></mat-datepicker-toggle>
       <mat-datepicker #enddatepicker>
         <mat-datepicker-actions>
           <button mat-button matDatepickerCancel>Cancel</button>
-          <button mat-raised-button color="primary" matDatepickerApply (click)='push()'>Apply</button>
+          <button mat-raised-button color="primary" matDatepickerApply
+            (click)='objectStateManager$.next( { dueDate:dueDate } )'>Apply</button>
         </mat-datepicker-actions>
       </mat-datepicker>
     </mat-form-field>
@@ -55,7 +58,7 @@
   <!-- DESCRIPTION -->
   <mat-form-field appearance="fill" style="width: 100%;">
     <mat-label>Task Description</mat-label>
-    <textarea  matInput></textarea>
+    <textarea matInput></textarea>
   </mat-form-field>
 
   <div class='flex-h flex-space-in-between flex-v-center'>

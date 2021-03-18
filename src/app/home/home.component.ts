@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
     this.createNewTaskMediator.subscribe(v => {
 
       const t = createTask();
-      t.lastModifyUser = "Dachi";
+      t.lastModifyUserEmail = "Dachi"; 
       this.tasks.push(t)
     });
   }
