@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { map, scan, shareReplay, startWith, tap } from 'rxjs/operators';
+import { first, map, scan, shareReplay, startWith, tap } from 'rxjs/operators';
 import { ITask, IUser } from '../models';
 
 
@@ -16,6 +19,8 @@ export class MiniTileComponent implements OnInit {
 
   public startDate!: Date;
   public dueDate!: Date;
+  public readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+
 
   public assigneeFormControl: FormControl = new FormControl();
   public options: IUser[] = [
@@ -51,34 +56,12 @@ export class MiniTileComponent implements OnInit {
     this.taskState$ = this.objectStateManager$.pipe(tap(v => console.log('State:', v)), scan((changes: any, value: ITask) => this.taskUpdated(changes, value), this.task), shareReplay(1));
   }
 
-
-  public onStartDateChanged() {
-    console.log('startDate=', this.startDate, 'end Date=', this.dueDate);
-    console.log(this.task);
-    this.task.title = "this is a test";
-  }
-
-  public onDueDateChanged() {
-
-    this.task.startDate
-  }
-
-  startWith(arg0: string): any {
-    throw new Error('Function not implemented.');
-  }
-
-  displayFn(user: any): string {
+  public displayFn(user: any): string {
     return user && user.name ? user.name : '';
   }
 
-  _filter(name: string): any[] {
-    const filterValue = name.toLowerCase();
-
-    return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
-  }
-
-  public onTaskDescriptionUpdate(taskDescription: string) {
-    this.task.title = taskDescription;
+  public onAssigneeSelected(event: MatAutocompleteSelectedEvent) {
+    this.taskState$.pipe(first()).subscribe(v => this.objectStateManager$.next({ assignee: [(event.option.value as IUser).email] }))
   }
 
   private taskUpdated(change: any, task: ITask): ITask {
@@ -113,4 +96,31 @@ export class MiniTileComponent implements OnInit {
     return res;
 
   }
+
+  private _filter(name: string): any[] {
+    const filterValue = name.toLowerCase();
+
+    return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  public add(event: MatChipInputEvent, chipInput: any): void {
+    const value = (event.value || '').trim();
+
+    if (!value) {
+      return;
+    }
+
+    this.taskState$.pipe(first()).subscribe(item => {
+      const hashTag = value.startsWith('#') ? value : `#${value}`;
+      item.hashTags.push(hashTag);
+
+      chipInput.value = ''
+    });
+
+  }
+
+  public remove(hashTag: string): void {
+    this.taskState$.pipe(first()).subscribe(item => item.hashTags = item.hashTags.filter(v => v !== hashTag));
+  }
+
 }

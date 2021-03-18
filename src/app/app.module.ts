@@ -17,8 +17,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
-
+import { MatChipsModule } from '@angular/material/chips';
 
 
 import { HomeComponent } from './home/home.component';
@@ -56,7 +55,8 @@ import { Subject } from 'rxjs';
     MatAutocompleteModule,
     ReactiveFormsModule,
     MatCheckboxModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatChipsModule
   ],
   providers: [
     { provide: CREATE_NEW_TASK_MEDIATOR, useValue: new Subject<undefined>() }

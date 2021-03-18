@@ -47,7 +47,7 @@
     <mat-form-field>
       <mat-label>Assignee(s)</mat-label>
       <input type="text" matInput [formControl]="assigneeFormControl" [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='onAssigneeSelected($event)'>
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
           {{option.name}}
         </mat-option>
@@ -58,16 +58,34 @@
   <!-- DESCRIPTION -->
   <mat-form-field appearance="fill" style="width: 100%;">
     <mat-label>Task Description</mat-label>
-    <textarea matInput></textarea>
+    <textarea matInput #description [value]='(taskState$ | async)?.description'
+      (keyup)='objectStateManager$.next( {description : description.value} )'></textarea>
   </mat-form-field>
 
   <div class='flex-h flex-space-in-between flex-v-center'>
-
-    <div matBadge="4" matBadgeSize='small' matBadgeOverlap="false">Attached Documents</div>
-    <div matBadge="4" matBadgeSize='small' matBadgeOverlap="false">Comments</div>
-    <div style="margin-right: 20px" matBadge="4" matBadgeSize='small' matBadgeOverlap="false">Tags</div>
-
+    <div [matBadge]='(taskState$ | async)?.attachements?.length' matBadgeSize='small' matBadgeOverlap="false">Attached
+      Documents</div>
+    <div [matBadge]='(taskState$ | async)?.comments?.length' matBadgeSize='small' matBadgeOverlap="false">Comments
+    </div>
+    <div style="margin-right: 20px" [matBadge]='(taskState$ | async)?.hashTags?.length' matBadgeSize='small'
+      matBadgeOverlap="false">Tags</div>
   </div>
 
+  <div>
+    <mat-form-field class="example-chip-list">
+      <mat-label>HashTags</mat-label>
+      <mat-chip-list #chipList aria-label="HashTag selection">
+        <mat-chip *ngFor="let hashTag of (taskState$ | async)?.hashTags" selectable='selectable' removable='true'
+          (removed)="remove(hashTag)">
+          {{hashTag}}
+          <mat-icon matChipRemove *ngIf='true'>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="New HashTag..." [matChipInputFor]="chipList" #chipInput
+          [matChipInputSeparatorKeyCodes]='separatorKeysCodes' [matChipInputAddOnBlur]='true'
+          (matChipInputTokenEnd)="add($event,chipInput);">
+      </mat-chip-list>
+    </mat-form-field>
 
+
+  </div>
 </mat-card>
