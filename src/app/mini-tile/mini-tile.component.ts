@@ -6,6 +6,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { first, map, scan, shareReplay, startWith, tap } from 'rxjs/operators';
 import { ITask, IUser } from '../models';
+import { HashTagService } from '../hashtag.service';
 
 
 @Component({
@@ -68,49 +69,13 @@ export class MiniTileComponent implements OnInit {
   }
 
   private taskUpdated(change: any, task: ITask): ITask {
-    const clone: ITask = { ...task, ...change, lastModifyDate: new Date(), lastModifyUserEmail: this.userService.getCurrentUser().email }
+    const updateTask: ITask = { ...task, ...change, lastModifyDate: new Date(), lastModifyUserEmail: this.userService.getCurrentUser().email }
 
-    for (let key of Object.keys(change)) {
-      clone.hashTags = this.handleProperty(clone, key as any);
-    }
+    HashTagService.recalculateHashTags(updateTask)
 
-    clone.hashTags = clone.hashTags.sort((a, b) => a > b ? 1 : -1);
-
-    return clone;
+    return updateTask;
   }
 
-  private handleProperty(obj: ITask, key: keyof ITask): string[] {
-
-    if (['hashTags', 'comments', 'description', 'title'].includes(key)) {
-      return obj.hashTags;
-    }
-
-    if (key === 'assignee') {
-      const assigneePrefix = '#assignee';
-      const newAssigneeHashs = obj.assignee.map((name: string) => `${assigneePrefix}-${name}`);
-      const res = newAssigneeHashs.concat(obj.hashTags.filter((val: string) => !val.startsWith(assigneePrefix)));
-
-      return res;
-    }
-
-    const prefix = `#${key}`;
-    const res = obj.hashTags.filter((val: string) => !val.startsWith(prefix));
-
-    const propValueMissing = (obj[key] !== typeof Boolean && !obj[key])
-      || (obj[key] && obj[key] === typeof [] && (obj[key] as []).length === 0);
-
-    if (propValueMissing) {
-      return res;
-    }
-
-    let newHashTag = `${prefix}-${obj[key]}`;
-    if (obj[key] === typeof Date) {
-      const date: Date = obj[key] as Date;
-      newHashTag = `${prefix}-${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
-    }
-    res.push(newHashTag);
-    return res;
-  }
 
   private _filter(name: string): any[] {
     const filterValue = name.toLowerCase();
