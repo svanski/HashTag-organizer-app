@@ -6,9 +6,9 @@ export class HashTagService {
 
     static recalculateHashTags(task: ITask): void {
 
-        const curryStringProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key !== porpertyName ? stringPropertyHandler(obj, key, hashTags) : null;
-        const curryStringArrayProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key !== porpertyName ? stringArrayPropertyHandler(obj, key, hashTags) : null;
-        const curryDateProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key !== porpertyName ? dateTimePropertyHandler(obj, key, hashTags) : null;
+        const curryStringProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key === porpertyName ? stringPropertyHandler(obj, key, hashTags) : null;
+        const curryStringArrayProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key === porpertyName ? stringArrayPropertyHandler(obj, key, hashTags) : null;
+        const curryDateProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key === porpertyName ? dateTimePropertyHandler(obj, key, hashTags) : null;
 
         const handlers = [
             curryStringProperyTypeHandler('title'),
@@ -24,6 +24,8 @@ export class HashTagService {
 
         for (let key of Object.keys(task)) {
             const res = handlers.reduce((res: string[] | null, func) => res ? res : func(task, key as any, task.hashTags.slice()), null);
+            console.log('Kye=', key, 'Hashtags=', res);
+
             task.hashTags = res ? res : task.hashTags;
         }
 
