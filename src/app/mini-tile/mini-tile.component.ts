@@ -94,7 +94,7 @@ export class MiniTileComponent implements OnInit {
     this.taskState$.pipe(first()).subscribe(item => {
       const hashTag = value.startsWith('#') ? value : `#${value}`;
       item.hashTags.push(hashTag);
-
+      this.hashTagService.recalculateHashTags(item);
       chipInput.value = ''
     });
 
