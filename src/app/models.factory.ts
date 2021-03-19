@@ -1,6 +1,6 @@
-import { ITask } from "./models";
+import { Task } from "./models";
 
-export function createTask(): ITask {
+export function createTask(): Task {
     return {
         title: '',
         hashTags: [],

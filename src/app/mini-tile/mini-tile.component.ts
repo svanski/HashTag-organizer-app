@@ -5,7 +5,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { first, map, scan, shareReplay, startWith, tap } from 'rxjs/operators';
-import { ITask, IUser } from '../models';
+import { Task, IUser } from '../models';
 import { HashTagService } from '../hashtag.service';
 
 
@@ -16,7 +16,7 @@ import { HashTagService } from '../hashtag.service';
 })
 export class MiniTileComponent implements OnInit {
 
-  @Input('task') public task!: ITask;
+  @Input('task') public task!: Task;
 
   public startDate!: Date;
   public dueDate!: Date;
@@ -31,7 +31,7 @@ export class MiniTileComponent implements OnInit {
   ];
 
   public filteredOptions: Observable<IUser[]> = EMPTY;
-  public taskState$: Observable<ITask> = EMPTY;
+  public taskState$: Observable<Task> = EMPTY;
 
 
   public objectStateManager$!: Subject<any>;
@@ -54,7 +54,7 @@ export class MiniTileComponent implements OnInit {
 
 
 
-    this.taskState$ = this.objectStateManager$.pipe(tap(v => console.log('DEBUG 0:', v)), scan((value: ITask, changes: any) => this.taskUpdated(changes, value), this.task), shareReplay(1));
+    this.taskState$ = this.objectStateManager$.pipe(tap(v => console.log('DEBUG 0:', v)), scan((value: Task, changes: any) => this.taskUpdated(changes, value), this.task), shareReplay(1));
 
     console.log('mini component constructed', this.task);
 
@@ -68,8 +68,8 @@ export class MiniTileComponent implements OnInit {
     this.taskState$.pipe(first()).subscribe(v => this.objectStateManager$.next({ assignee: [(event.option.value as IUser).email] }))
   }
 
-  private taskUpdated(change: any, task: ITask): ITask {
-    const updateTask: ITask = { ...task, ...change, lastModifyDate: new Date(), lastModifyUserEmail: this.userService.getCurrentUser().email }
+  private taskUpdated(change: any, task: Task): Task {
+    const updateTask: Task = { ...task, ...change, lastModifyDate: new Date(), lastModifyUserEmail: this.userService.getCurrentUser().email }
 
     HashTagService.recalculateHashTags(updateTask)
 
