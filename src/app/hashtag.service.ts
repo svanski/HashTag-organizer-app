@@ -26,17 +26,14 @@ export class HashTagService {
             task.hashTags = res ? res : task.hashTags;
         }
 
-        this.sortHashtags(task);
+        this.sortDistinctHashtags(task);
     }
 
-    public sortHashtags(task: ITask): void {
-        task.hashTags = task.hashTags.sort(sortFunc);
-
+    public sortDistinctHashtags(task: ITask): void {
+        task.hashTags = task.hashTags.filter((value, index, self) => self.indexOf(value) === index).sort(sortFunc);
     }
 
 }
-
-
 
 function sortFunc(a: string, b: string): number {
     const propertynames = ['#title', '#description', '#lastModifyUserEmail', '#startDate', '#dueDate', '#lastModifyDate', '#assignee'];
