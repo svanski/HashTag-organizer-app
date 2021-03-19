@@ -2,8 +2,6 @@ import { ITask } from "./models";
 
 export class HashTagService {
 
-
-
     static recalculateHashTags(task: ITask): void {
 
         const curryStringProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key === porpertyName ? stringPropertyHandler(obj, key, hashTags) : null;
@@ -24,21 +22,34 @@ export class HashTagService {
 
         for (let key of Object.keys(task)) {
             const res = handlers.reduce((res: string[] | null, func) => res ? res : func(task, key as any, task.hashTags.slice()), null);
-            console.log('Kye=', key, 'Hashtags=', res);
 
             task.hashTags = res ? res : task.hashTags;
         }
 
-        task.hashTags = task.hashTags.sort((a, b) => a > b ? 1 : -1);
+        HashTagService.sortHashtags(task);
+    }
+
+    static sortHashtags(task: ITask): void {
+        task.hashTags = task.hashTags.sort(sortFunc);
 
     }
 
 }
 
 
-// : Date,
-// : string
 
+function sortFunc(a: string, b: string): number {
+    const propertynames = ['#title', '#description', '#lastModifyUserEmail', '#startDate', '#dueDate', '#lastModifyDate', '#assignee'];
+    if (propertynames.includes(a) && !propertynames.includes(b)) {
+        return -1;
+    }
+
+    if (!propertynames.includes(a) && propertynames.includes(b)) {
+        return 1;
+    }
+
+    return (a as any) - (b as any);
+}
 
 
 
