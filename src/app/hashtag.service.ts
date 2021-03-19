@@ -2,7 +2,7 @@ import { ITask } from "./models";
 
 export class HashTagService {
 
-    static recalculateHashTags(task: ITask): void {
+    public recalculateHashTags(task: ITask): void {
 
         const curryStringProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key === porpertyName ? stringPropertyHandler(obj, key, hashTags) : null;
         const curryStringArrayProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key === porpertyName ? stringArrayPropertyHandler(obj, key, hashTags) : null;
@@ -26,10 +26,10 @@ export class HashTagService {
             task.hashTags = res ? res : task.hashTags;
         }
 
-        HashTagService.sortHashtags(task);
+        this.sortHashtags(task);
     }
 
-    static sortHashtags(task: ITask): void {
+    public sortHashtags(task: ITask): void {
         task.hashTags = task.hashTags.sort(sortFunc);
 
     }

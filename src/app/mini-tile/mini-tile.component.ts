@@ -12,7 +12,8 @@ import { HashTagService } from '../hashtag.service';
 @Component({
   selector: 'app-mini-tile',
   templateUrl: './mini-tile.component.html',
-  styleUrls: ['./mini-tile.component.css']
+  styleUrls: ['./mini-tile.component.css'],
+  providers: [HashTagService]
 })
 export class MiniTileComponent implements OnInit {
 
@@ -40,7 +41,7 @@ export class MiniTileComponent implements OnInit {
   }
 
 
-  constructor() {
+  constructor(private hashTagService: HashTagService) {
     this.objectStateManager$ = new Subject<any>();
   }
 
@@ -71,7 +72,7 @@ export class MiniTileComponent implements OnInit {
   private taskUpdated(change: any, task: ITask): ITask {
     const updateTask: ITask = { ...task, ...change, lastModifyDate: new Date(), lastModifyUserEmail: this.userService.getCurrentUser().email }
 
-    HashTagService.recalculateHashTags(updateTask)
+    this.hashTagService.recalculateHashTags(updateTask)
 
     return updateTask;
   }
