@@ -1,12 +1,12 @@
-import { Task } from "./models";
+import { ITask } from "./models";
 
 export class HashTagService {
 
-    static recalculateHashTags(task: Task): void {
+    static recalculateHashTags(task: ITask): void {
 
-        const curryStringProperyTypeHandler = (porpertyName: string) => (obj: Task, key: keyof Task, hashTags: string[]): string[] | null => key === porpertyName ? stringPropertyHandler(obj, key, hashTags) : null;
-        const curryStringArrayProperyTypeHandler = (porpertyName: string) => (obj: Task, key: keyof Task, hashTags: string[]): string[] | null => key === porpertyName ? stringArrayPropertyHandler(obj, key, hashTags) : null;
-        const curryDateProperyTypeHandler = (porpertyName: string) => (obj: Task, key: keyof Task, hashTags: string[]): string[] | null => key === porpertyName ? dateTimePropertyHandler(obj, key, hashTags) : null;
+        const curryStringProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key === porpertyName ? stringPropertyHandler(obj, key, hashTags) : null;
+        const curryStringArrayProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key === porpertyName ? stringArrayPropertyHandler(obj, key, hashTags) : null;
+        const curryDateProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key === porpertyName ? dateTimePropertyHandler(obj, key, hashTags) : null;
 
         const handlers = [
             curryStringProperyTypeHandler('title'),
@@ -29,7 +29,7 @@ export class HashTagService {
         HashTagService.sortHashtags(task);
     }
 
-    static sortHashtags(task: Task): void {
+    static sortHashtags(task: ITask): void {
         task.hashTags = task.hashTags.sort(sortFunc);
 
     }
@@ -54,7 +54,7 @@ function sortFunc(a: string, b: string): number {
 
 
 
-function stringPropertyHandler(obj: Task, propertyName: keyof Task, hashTags: string[]): string[] | null {
+function stringPropertyHandler(obj: ITask, propertyName: keyof ITask, hashTags: string[]): string[] | null {
     const hashTagPrefix = `#${propertyName}-`;
     const filteredHashTags = hashTags.filter(v => !v.startsWith(hashTagPrefix));
 
@@ -63,7 +63,7 @@ function stringPropertyHandler(obj: Task, propertyName: keyof Task, hashTags: st
     return newHashTag ? [...filteredHashTags, newHashTag] : filteredHashTags;
 }
 
-function stringArrayPropertyHandler(obj: Task, propertyName: keyof Task, hashTags: string[]): string[] | null {
+function stringArrayPropertyHandler(obj: ITask, propertyName: keyof ITask, hashTags: string[]): string[] | null {
     const hashTagPrefix = `#${propertyName}-`;
     const filteredHashTags = hashTags.filter(v => !v.startsWith(hashTagPrefix));
 
@@ -73,7 +73,7 @@ function stringArrayPropertyHandler(obj: Task, propertyName: keyof Task, hashTag
     return newHashTags ? [...filteredHashTags, ...newHashTags] : filteredHashTags;
 }
 
-function dateTimePropertyHandler(obj: Task, propertyName: keyof Task, hashTags: string[]): string[] | null {
+function dateTimePropertyHandler(obj: ITask, propertyName: keyof ITask, hashTags: string[]): string[] | null {
     const hashTagPrefix = `#${propertyName}-`;
     const filteredHashTags = hashTags.filter(v => !v.startsWith(hashTagPrefix));
 

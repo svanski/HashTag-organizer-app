@@ -1,18 +1,14 @@
-export class Task {
-
-    private _hashTags: string[] = [];
-    public get hashTags(): string[] { return this._hashTags }
-    public set hashTags(val: string[]) { this._hashTags = val; }
-
-    public title: string | null = null;
-    public description: string | null = null;
-    public startDate?: Date;
-    public dueDate?: Date;
-    public assignee: string[] = [];
-    public attachements: [] = [];
-    public comments: IComment[] = []
-    public lastModifyDate: Date = new Date();
-    public lastModifyUserEmail: string | null = null;
+export interface ITask {
+    hashTags: string[],
+    title: string | null,
+    description: string | null,
+    startDate?: Date,
+    dueDate?: Date,
+    assignee: string[],
+    attachements: [],
+    comments: IComment[],
+    lastModifyDate: Date,
+    lastModifyUserEmail: string
 }
 
 export interface IUser {

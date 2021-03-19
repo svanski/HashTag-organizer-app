@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CREATE_NEW_TASK_MEDIATOR } from '../actions.mediator';
-import { Task } from '../models';
+import { ITask } from '../models';
 import { createTask } from '../models.factory';
 
 @Component({
@@ -11,7 +11,7 @@ import { createTask } from '../models.factory';
 })
 export class HomeComponent implements OnInit {
 
-  public tasks: Task[] = []
+  public tasks: ITask[] = []
 
   constructor(@Inject(CREATE_NEW_TASK_MEDIATOR) private createNewTaskMediator: Observable<undefined>) {
     this.createNewTaskMediator.subscribe(v => {
