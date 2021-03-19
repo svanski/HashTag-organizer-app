@@ -55,7 +55,7 @@ export class MiniTileComponent implements OnInit {
 
 
 
-    this.taskState$ = this.objectStateManager$.pipe(tap(v => console.log('DEBUG 0:', v)), scan((value: ITask, changes: any) => this.taskUpdated(changes, value), this.task), shareReplay(1));
+    this.taskState$ = this.objectStateManager$.pipe(startWith(this.task), tap(v => console.log('DEBUG 0:', v)), scan((value: ITask, changes: any) => this.taskUpdated(changes, value), this.task), shareReplay(1));
 
     console.log('mini component constructed', this.task);
 
@@ -92,6 +92,7 @@ export class MiniTileComponent implements OnInit {
     }
 
     this.taskState$.pipe(first()).subscribe(item => {
+
       const hashTag = value.startsWith('#') ? value : `#${value}`;
       item.hashTags.push(hashTag);
       this.hashTagService.recalculateHashTags(item);
