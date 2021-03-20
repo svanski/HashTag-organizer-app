@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { first, map, scan, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, first, map, scan, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 import { ITask, IUser } from '../common/models';
 import { HashTagService } from '../common/hashtag.service';
 import { UsersRepository } from '../common/users.repository';
@@ -55,6 +55,7 @@ export class MiniTileComponent implements OnInit {
 
     this.taskState$ = this.objectStateManager$.pipe(
       startWith(this.task),
+      distinctUntilChanged(this.areEventsSame),
       tap(v => console.log('DEBUG 0:', v)),
       scan((value: ITask, changes: any) => this.taskUpdated(changes, value), this.task),
       shareReplay(1)
@@ -108,4 +109,19 @@ export class MiniTileComponent implements OnInit {
     this.taskState$.pipe(first()).subscribe(item => item.hashTags = item.hashTags.filter(v => v !== hashTag));
   }
 
+  private areEventsSame(a: any, b: any): boolean {
+
+    if (typeof a === 'object' && typeof b === 'object') {
+      const aKeys = Object.keys(a);
+      const bKeys = Object.keys(b);
+      if (aKeys.length !== bKeys.length) {
+        return false;
+      }
+
+      const areSame = aKeys.every(keyA => bKeys.includes(keyA) && a[keyA] === b[keyA]);
+      return areSame;
+    }
+
+    return a === b;
+  }
 }
