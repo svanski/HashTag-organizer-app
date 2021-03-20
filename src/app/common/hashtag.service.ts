@@ -9,6 +9,7 @@ export class HashTagService {
         const curryDateProperyTypeHandler = (porpertyName: string) => (obj: ITask, key: keyof ITask, hashTags: string[]): string[] | null => key === porpertyName ? dateTimePropertyHandler(obj, key, hashTags) : null;
 
         const handlers = [
+            curryStringProperyTypeHandler('id'),
             curryStringProperyTypeHandler('title'),
             curryStringProperyTypeHandler('description'),
             curryStringProperyTypeHandler('lastModifyUserEmail'),
