@@ -1,12 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { EMPTY, Observable, Observer, Subject } from 'rxjs';
 import { first, map, scan, shareReplay, startWith, tap } from 'rxjs/operators';
 import { ITask, IUser } from '../models';
 import { HashTagService } from '../hashtag.service';
+import { VIEW_TASK_DETAILS_MEDIATOR } from '../actions.mediator';
 
 
 @Component({
@@ -18,6 +19,7 @@ import { HashTagService } from '../hashtag.service';
 export class MiniTileComponent implements OnInit {
 
   @Input('task') public task!: ITask;
+  @Input('isLargeItem') public isLargeItem: boolean = false;
 
   public startDate!: Date;
   public dueDate!: Date;
@@ -41,8 +43,9 @@ export class MiniTileComponent implements OnInit {
   }
 
 
-  constructor(private hashTagService: HashTagService) {
+  constructor(private hashTagService: HashTagService, @Inject(VIEW_TASK_DETAILS_MEDIATOR) private taskSelectionMediator: Observer<ITask>) {
     this.objectStateManager$ = new Subject<any>();
+
   }
 
   ngOnInit(): void {
@@ -63,6 +66,10 @@ export class MiniTileComponent implements OnInit {
 
   public displayFn(user: any): string {
     return user && user.name ? user.name : '';
+  }
+
+  public onViewTaskDetails(): void {
+    this.taskState$.pipe(first()).subscribe(item => this.taskSelectionMediator.next(item))
   }
 
   public onAssigneeSelected(event: MatAutocompleteSelectedEvent) {

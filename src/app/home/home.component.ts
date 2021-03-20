@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { CREATE_NEW_TASK_MEDIATOR } from '../actions.mediator';
+import { EMPTY, Observable, of } from 'rxjs';
+import { CREATE_NEW_TASK_MEDIATOR, VIEW_TASK_DETAILS_MEDIATOR } from '../actions.mediator';
 import { ITask } from '../models';
 import { createTask } from '../models.factory';
 
@@ -11,18 +11,20 @@ import { createTask } from '../models.factory';
 })
 export class HomeComponent implements OnInit {
 
-  public tasks: ITask[] = []
+  public tasks: ITask[] = [];
+  public selectedTask!: ITask;
 
-  constructor(@Inject(CREATE_NEW_TASK_MEDIATOR) private createNewTaskMediator: Observable<undefined>) {
+  constructor(@Inject(CREATE_NEW_TASK_MEDIATOR) private createNewTaskMediator: Observable<undefined>,
+    @Inject(VIEW_TASK_DETAILS_MEDIATOR) public taskSelectedMediator: Observable<ITask>) {
     this.createNewTaskMediator.subscribe(v => {
 
       const t = createTask();
-      t.lastModifyUserEmail = "Dachi"; 
+      t.lastModifyUserEmail = "Dachi";
       this.tasks.push(t)
     });
+
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
 }
