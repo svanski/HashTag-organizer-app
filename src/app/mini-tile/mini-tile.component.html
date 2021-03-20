@@ -79,7 +79,8 @@
     <mat-form-field style="width: 100%;">
       <mat-label>HashTags</mat-label>
       <mat-chip-list #chipList aria-label="HashTag selection">
-        <mat-chip *ngFor="let hashTag of (taskState$ | async)?.hashTags" removable='true' (removed)="remove(hashTag)" [matTooltip]='hashTag'>
+        <mat-chip *ngFor="let hashTag of (taskState$ | async)?.hashTags" removable='true' (removed)="remove(hashTag)"
+          [matTooltip]='hashTag'>
           {{hashTag | limitTextLength:15}}
           <mat-icon matChipRemove *ngIf='true'>cancel</mat-icon>
         </mat-chip>
@@ -88,7 +89,8 @@
           (matChipInputTokenEnd)="add($event,chipInput);">
       </mat-chip-list>
     </mat-form-field>
-
-
   </div>
+  <mat-card-actions>
+    <button mat-button>DELETE</button>
+  </mat-card-actions>
 </mat-card>

@@ -10,9 +10,6 @@
 
 </div>
 
-<div>
-  <div id='tiles-container'>
-    <app-mini-tile class='task-tile' *ngFor='let item of tasks | async' [task]='item'></app-mini-tile>
-  </div>
-
+<div id='tiles-container'>
+  <app-mini-tile class='task-tile' *ngFor='let item of tasks | async' [task]='item'></app-mini-tile>
 </div>
