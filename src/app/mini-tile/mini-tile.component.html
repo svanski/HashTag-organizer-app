@@ -47,7 +47,7 @@
   <!-- ASSIGNEE -->
   <form>
     <mat-form-field>
-      <mat-label>Assignee(s)</mat-label>
+      <mat-label>Primary Assignee</mat-label>
       <input type="text" matInput [formControl]="assigneeFormControl" [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='onAssigneeSelected($event)'>
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
