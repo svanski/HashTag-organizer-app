@@ -19,17 +19,16 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 
-
 import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { MiniTileComponent } from './mini-tile/mini-tile.component';
 import { ActionsBarComponent } from './actions-bar/actions-bar.component';
 
-import { CREATE_NEW_TASK_MEDIATOR, VIEW_TASK_DETAILS_MEDIATOR } from './actions.mediator';
+import { CREATE_NEW_TASK_MEDIATOR, VIEW_TASK_DETAILS_MEDIATOR } from './common/actions.mediator';
 
 import { Subject } from 'rxjs';
-import { ITask } from './models';
+import { ITask } from './common/models';
 
 
 @NgModule({

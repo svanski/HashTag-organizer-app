@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { EMPTY, Observable, of } from 'rxjs';
-import { CREATE_NEW_TASK_MEDIATOR, VIEW_TASK_DETAILS_MEDIATOR } from '../actions.mediator';
-import { ITask } from '../models';
-import { createTask } from '../models.factory';
+import { CREATE_NEW_TASK_MEDIATOR, VIEW_TASK_DETAILS_MEDIATOR } from '../common/actions.mediator';
+import { ITask } from '../common/models';
+import { createTask } from '../common/models.factory';
 
 @Component({
   selector: 'app-home',

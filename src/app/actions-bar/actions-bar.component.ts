@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Observer } from 'rxjs';
-import { CREATE_NEW_TASK_MEDIATOR } from '../actions.mediator';
+import { CREATE_NEW_TASK_MEDIATOR } from '../common/actions.mediator';
 
 @Component({
   selector: 'app-actions-bar',

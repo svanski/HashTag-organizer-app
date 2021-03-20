@@ -5,9 +5,9 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { EMPTY, Observable, Observer, Subject } from 'rxjs';
 import { first, map, scan, shareReplay, startWith, tap } from 'rxjs/operators';
-import { ITask, IUser } from '../models';
-import { HashTagService } from '../hashtag.service';
-import { VIEW_TASK_DETAILS_MEDIATOR } from '../actions.mediator';
+import { ITask, IUser } from '../common/models';
+import { HashTagService } from '../common/hashtag.service';
+import { VIEW_TASK_DETAILS_MEDIATOR } from '../common/actions.mediator';
 
 
 @Component({
