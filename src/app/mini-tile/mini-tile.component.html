@@ -8,9 +8,10 @@
         (keyup)='objectStateManager$.next( { title:descriptionInput.value } )'>
     </mat-form-field>
 
-    <a mat-mini-fab color='primary' aria-label="Open Task" [routerLink]="['/task', (taskState$ | async)?.id]">
-      <mat-icon>open_in_new</mat-icon>
+    <a matTooltip='Task Id' mat-button color='primary' aria-label="Open Task" [routerLink]="['/task', (taskState$ | async)?.id]">
+      {{ (taskState$ | async)?.id }}
     </a>
+
   </div>
 
   <!-- DATE -->
