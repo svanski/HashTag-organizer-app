@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthoService } from './common/autho.service';
+import { AuthService } from './common/autho.service';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +10,7 @@ import { AuthoService } from './common/autho.service';
 export class AppComponent implements OnInit {
   title = 'hashtag-planner-app';
 
-  constructor(private authoService: AuthoService, private router: Router) { }
+  constructor(private authoService: AuthService, private router: Router) { }
 
-  ngOnInit(): void {
-
-    if (this.authoService.isLoggedIn) {
-      this.router.navigateByUrl('/login');
-    }
-
-  }
+  ngOnInit(): void { }
 }
