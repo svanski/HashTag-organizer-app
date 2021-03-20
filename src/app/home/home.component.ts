@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
 
     this.tasks = tasksRepository.getTasks();
 
-    createNewTaskMediator.subscribe(v => { tasksRepository.insertNewTask() });
+    createNewTaskMediator.subscribe(_ => { tasksRepository.insertNewTask() });
   }
 
   ngOnInit(): void { }
