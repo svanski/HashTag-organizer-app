@@ -31,6 +31,7 @@ import { CREATE_NEW_TASK_MEDIATOR, VIEW_TASK_DETAILS_MEDIATOR } from './common/a
 import { Subject } from 'rxjs';
 import { ITask } from './common/models';
 import { TasksViewComponent } from './tasks-view/tasks-view.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { TasksViewComponent } from './tasks-view/tasks-view.component';
     SearchBarComponent,
     MiniTileComponent,
     ActionsBarComponent,
-    TasksViewComponent
+    TasksViewComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
