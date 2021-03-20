@@ -2,11 +2,20 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 import { ITask } from "./models";
+import { SessionFacade } from "./session.facade";
 
 @Injectable({ providedIn: 'root' })
 export class TasksRepository {
 
-    private repo: BehaviorSubject<ITask[]> = new BehaviorSubject<ITask[]>([]);
+    private readonly repo: BehaviorSubject<ITask[]>;
+    private readonly sessionFacade = SessionFacade<ITask[]>('PlannerAppTasks');
+
+    constructor() {
+        const tasks = this.sessionFacade.load() ?? [];
+        this.repo = new BehaviorSubject<ITask[]>(tasks);
+
+        this.repo.subscribe(tasks => this.sessionFacade.save(tasks));
+    }
 
     public insertNewTask(): void {
         this.addTask({
