@@ -1,0 +1,18 @@
+#tiles-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.task-tile {
+  margin: auto;
+  width: 30%;
+  min-width: 270px;
+  height: 400px;
+}
+
+
+#search-container {
+  width: 50%;
+}

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { EMPTY, Observable } from 'rxjs';
+import { ITask } from '../common/models';
+import { TasksRepository } from '../common/tasks.repository';
 
 @Component({
   selector: 'app-tasks-view',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TasksViewComponent implements OnInit {
 
-  constructor() { }
+  public tasks: Observable<ITask[]> = EMPTY;
+
+  constructor(private tasksRepository: TasksRepository) {
+    this.tasks = tasksRepository.getTasks();
+  }
 
   ngOnInit(): void {
   }
 
+  public onAddNewTask() {
+    this.tasksRepository.insertNewTask();
+  }
 }

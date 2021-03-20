@@ -24,9 +24,8 @@ import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { MiniTileComponent } from './mini-tile/mini-tile.component';
-import { ActionsBarComponent } from './actions-bar/actions-bar.component';
 
-import { CREATE_NEW_TASK_MEDIATOR, VIEW_TASK_DETAILS_MEDIATOR } from './common/actions.mediator';
+import { VIEW_TASK_DETAILS_MEDIATOR } from './common/actions.mediator';
 
 import { Subject } from 'rxjs';
 import { ITask } from './common/models';
@@ -41,7 +40,6 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     LogInComponent,
     SearchBarComponent,
     MiniTileComponent,
-    ActionsBarComponent,
     TasksViewComponent,
     PageNotFoundComponent
   ],
@@ -65,7 +63,6 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     MatTooltipModule
   ],
   providers: [
-    { provide: CREATE_NEW_TASK_MEDIATOR, useValue: new Subject<undefined>() },
     { provide: VIEW_TASK_DETAILS_MEDIATOR, useValue: new Subject<ITask | undefined>() }
   ],
   bootstrap: [AppComponent]

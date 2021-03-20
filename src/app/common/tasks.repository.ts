@@ -26,6 +26,4 @@ export class TasksRepository {
     public getTasks(): Observable<ITask[]> { return this.repo; }
 
     public addTask(task: ITask) { this.repo.next([task, ...this.repo.value]); }
-
-
 }

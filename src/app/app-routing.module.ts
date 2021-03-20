@@ -9,7 +9,7 @@ import { TasksViewComponent } from './tasks-view/tasks-view.component';
 const routes: Routes = [
 
   { path: 'home', component: HomeComponent },
-  { path: 'taskst', component: TasksViewComponent, canActivate: [AuthGuard] },
+  { path: 'tasks', component: TasksViewComponent },
   { path: 'login', component: LogInComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },  // Wildcard route for a 404 page
