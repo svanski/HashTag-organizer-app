@@ -31,6 +31,7 @@ import { Subject } from 'rxjs';
 import { ITask } from './common/models';
 import { TasksViewComponent } from './tasks-view/tasks-view.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { TaskDetailComponent } from './task-detail/task-detail.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     SearchBarComponent,
     MiniTileComponent,
     TasksViewComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    TaskDetailComponent,
   ],
   imports: [
     BrowserModule,
