@@ -9,10 +9,10 @@ import { AuthService } from '../common/autho.service';
 })
 export class LogInComponent implements OnInit {
 
-  private invalidCredentialMsg: string = '';
-  private username: string = '';
-  private password: string = '';
+  public hide: boolean = true;
+
   private continueUrl: string | null = "home";
+
 
   constructor(
     private authService: AuthService,
@@ -24,7 +24,15 @@ export class LogInComponent implements OnInit {
       .subscribe(params => {
         this.continueUrl = params.get('continueUrl') ?? this.continueUrl;
         console.log('LoginComponent/ngOnInit ' + this.continueUrl);
+
+        this.router.navigate([this.continueUrl]);
       });
+  }
+
+
+  public onLogIn(userName: string, password: string): void {
+    this.authService.logIn(userName, password);
+    this.ngOnInit();
   }
 
 }
