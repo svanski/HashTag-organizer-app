@@ -1,4 +1,5 @@
 export interface ITask {
+    id: string;
     hashTags: string[],
     title: string | null,
     description: string | null,
