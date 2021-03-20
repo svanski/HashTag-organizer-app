@@ -32,6 +32,7 @@ import { ITask } from './common/models';
 import { TasksViewComponent } from './tasks-view/tasks-view.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
+import { LimitTextLengthPipe } from './limit-text-length.pipe';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { TaskDetailComponent } from './task-detail/task-detail.component';
     TasksViewComponent,
     PageNotFoundComponent,
     TaskDetailComponent,
+    LimitTextLengthPipe,
   ],
   imports: [
     BrowserModule,

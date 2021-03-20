@@ -8,7 +8,8 @@
         (keyup)='objectStateManager$.next( { title:descriptionInput.value } )'>
     </mat-form-field>
 
-    <a matTooltip='Task Id' mat-button color='primary' aria-label="Open Task" [routerLink]="['/task', (taskState$ | async)?.id]">
+    <a matTooltip='Task Id' mat-button color='primary' aria-label="Open Task"
+      [routerLink]="['/task', (taskState$ | async)?.id]">
       {{ (taskState$ | async)?.id }}
     </a>
 
@@ -63,6 +64,7 @@
       (keyup)='objectStateManager$.next( {description : description.value} )'></textarea>
   </mat-form-field>
 
+  <!-- BADGES -->
   <div class='flex-h flex-space-in-between flex-v-center'>
     <div [matBadge]='(taskState$ | async)?.attachements?.length' matBadgeSize='small' matBadgeOverlap="false">Attached
       Documents</div>
@@ -72,12 +74,13 @@
       matBadgeOverlap="false">Tags</div>
   </div>
 
+  <!-- HASHTAGS -->
   <div>
     <mat-form-field style="width: 100%;">
       <mat-label>HashTags</mat-label>
       <mat-chip-list #chipList aria-label="HashTag selection">
-        <mat-chip *ngFor="let hashTag of (taskState$ | async)?.hashTags" removable='true' (removed)="remove(hashTag)">
-          {{hashTag}}
+        <mat-chip *ngFor="let hashTag of (taskState$ | async)?.hashTags" removable='true' (removed)="remove(hashTag)" [matTooltip]='hashTag'>
+          {{hashTag | limitTextLength:15}}
           <mat-icon matChipRemove *ngIf='true'>cancel</mat-icon>
         </mat-chip>
         <input placeholder="New HashTag..." [matChipInputFor]="chipList" #chipInput
