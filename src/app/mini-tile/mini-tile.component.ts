@@ -4,10 +4,11 @@ import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { EMPTY, Observable, Observer, Subject } from 'rxjs';
-import { first, map, scan, shareReplay, startWith, tap } from 'rxjs/operators';
+import { filter, first, map, scan, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 import { ITask, IUser } from '../common/models';
 import { HashTagService } from '../common/hashtag.service';
 import { VIEW_TASK_DETAILS_MEDIATOR } from '../common/actions.mediator';
+import { UsersRepository } from '../common/users.repository';
 
 
 @Component({
@@ -25,17 +26,11 @@ export class MiniTileComponent implements OnInit {
   public dueDate!: Date;
   public readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-
   public assigneeFormControl: FormControl = new FormControl();
-  public options: IUser[] = [
-    { id: 0, email: 'Mary@cerb', name: 'Mary', selected: false },
-    { id: 1, email: 'Shelley@cerb', name: 'Shelley', selected: false },
-    { id: 2, email: 'Igor@cerb', name: 'Igor', selected: false }
-  ];
-
   public filteredOptions: Observable<IUser[]> = EMPTY;
   public taskState$: Observable<ITask> = EMPTY;
 
+  public users$: Observable<IUser[]> = EMPTY;
 
   public objectStateManager$!: Subject<any>;
   private userService = {
@@ -43,9 +38,9 @@ export class MiniTileComponent implements OnInit {
   }
 
 
-  constructor(private hashTagService: HashTagService, @Inject(VIEW_TASK_DETAILS_MEDIATOR) private taskSelectionMediator: Observer<ITask>) {
+  constructor(private hashTagService: HashTagService, @Inject(VIEW_TASK_DETAILS_MEDIATOR) private taskSelectionMediator: Observer<ITask>, userRepository: UsersRepository) {
     this.objectStateManager$ = new Subject<any>();
-
+    this.users$ = userRepository.getUsers();
   }
 
   ngOnInit(): void {
@@ -53,15 +48,16 @@ export class MiniTileComponent implements OnInit {
       .pipe(
         startWith(''),
         map((value: any) => typeof value === 'string' ? value : (value as IUser).name),
-        map(name => name ? this._filter(name) : this.options.slice())
+        map(name => name ? this._filter(name) : this.users$),
+        switchMap(v => v)
       );
 
-
-
-    this.taskState$ = this.objectStateManager$.pipe(startWith(this.task), tap(v => console.log('DEBUG 0:', v)), scan((value: ITask, changes: any) => this.taskUpdated(changes, value), this.task), shareReplay(1));
-
-    console.log('mini component constructed', this.task);
-
+    this.taskState$ = this.objectStateManager$.pipe(
+      startWith(this.task),
+      tap(v => console.log('DEBUG 0:', v)),
+      scan((value: ITask, changes: any) => this.taskUpdated(changes, value), this.task),
+      shareReplay(1)
+    );
   }
 
   public displayFn(user: any): string {
@@ -85,10 +81,9 @@ export class MiniTileComponent implements OnInit {
   }
 
 
-  private _filter(name: string): any[] {
+  private _filter(name: string): Observable<IUser[]> {
     const filterValue = name.toLowerCase();
-
-    return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+    return this.users$.pipe(map(users => users.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)));
   }
 
   public add(event: MatChipInputEvent, chipInput: any): void {
