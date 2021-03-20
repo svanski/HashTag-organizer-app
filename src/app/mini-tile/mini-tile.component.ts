@@ -1,15 +1,14 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { EMPTY, Observable, Observer, Subject } from 'rxjs';
-import { filter, first, map, scan, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
+import { EMPTY, Observable, Subject } from 'rxjs';
+import { first, map, scan, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 import { ITask, IUser } from '../common/models';
 import { HashTagService } from '../common/hashtag.service';
-import { VIEW_TASK_DETAILS_MEDIATOR } from '../common/actions.mediator';
 import { UsersRepository } from '../common/users.repository';
-import { Router } from '@angular/router';
+import { TasksRepository } from '../common/tasks.repository';
 
 
 @Component({
@@ -39,7 +38,7 @@ export class MiniTileComponent implements OnInit {
   }
 
 
-  constructor(private hashTagService: HashTagService, userRepository: UsersRepository, private router: Router) {
+  constructor(private hashTagService: HashTagService, userRepository: UsersRepository, private taskRepo: TasksRepository) {
     this.objectStateManager$ = new Subject<any>();
     this.users$ = userRepository.getUsers();
   }
@@ -71,6 +70,10 @@ export class MiniTileComponent implements OnInit {
 
   public onAssigneeSelected(event: MatAutocompleteSelectedEvent) {
     this.taskState$.pipe(first()).subscribe(v => this.objectStateManager$.next({ assignee: [(event.option.value as IUser).email] }))
+  }
+
+  public onDeleteTask(): void {
+    this.taskState$.pipe(first()).subscribe(t => this.taskRepo.deleteTask(t))
   }
 
   private taskUpdated(change: any, task: ITask): ITask {
