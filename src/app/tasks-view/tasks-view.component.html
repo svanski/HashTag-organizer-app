@@ -1,6 +1,36 @@
+<!-- ACTION BAR -->
 <div style="margin: auto; width: 97%; margin-top: 20px; margin-bottom: 20px; align-items: center;"
      class='flex-h'>
-  <app-search-bar id='search-container'></app-search-bar>
+
+  <!-- SEARCH CONTROL -->
+  <mat-form-field id='search-container'>
+    <mat-label>HashTags</mat-label>
+    <mat-select [formControl]="hashTagsFromControl"
+                multiple>
+
+      <!-- SEARCH BOX -->
+      <mat-form-field style="width: 100%;">
+        <mat-label>Filter</mat-label>
+        <input matInput
+               [formControl]="searchFormControl"
+               type="text">
+        <button mat-button
+                *ngIf="searchFormControl.value"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="searchFormControl.reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+
+      <mat-option *ngFor="let option of filteredOptions | async"
+                  [value]="option">{{option}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- ACTION BUTTONS -->
   <div style="margin-left: 20px;">
 
     <button mat-button>Save filters</button>
@@ -13,6 +43,7 @@
 
 </div>
 
+<!-- TILES -->
 <div id='tiles-container'>
   <app-mini-tile class='task-tile'
                  *ngFor='let item of tasks | async'
