@@ -3,8 +3,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { animationFrameScheduler, asyncScheduler, EMPTY, Observable, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, first, map, observeOn, scan, shareReplay, skip, startWith, subscribeOn, switchMap, take, tap } from 'rxjs/operators';
+import { animationFrameScheduler, asyncScheduler, EMPTY, interval, merge, Observable, Subject, Subscription } from 'rxjs';
+import { combineAll, debounce, distinctUntilChanged, first, map, observeOn, scan, shareReplay, skip, startWith, subscribeOn, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { ITask, IUser } from '../common/models';
 import { UsersRepository } from '../common/users.repository';
 import { TasksRepository } from '../common/tasks.repository';
@@ -20,13 +20,16 @@ export class MiniTileComponent implements OnInit, OnDestroy {
   @Input('task') public task!: ITask;
   @Input('isLargeItem') public isLargeItem: boolean = false;
 
-  public startDate!: Date;
-  public dueDate!: Date;
+  public startDate?: Date;
+  public dueDate?: Date;
   public readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   public assigneeNameFilter: string | undefined;
 
   public assigneeFormControl: FormControl = new FormControl();
-  public filteredOptions: Observable<IUser[]> = EMPTY;
+  public taskTitleFormControl: FormControl = new FormControl();
+  public taskDescriptionFormControl: FormControl = new FormControl();
+
+  public filteredAssignee: Observable<IUser[]> = EMPTY;
   public taskState$: Observable<ITask> = EMPTY;
 
   public users$: Observable<IUser[]> = EMPTY;
@@ -41,19 +44,27 @@ export class MiniTileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.filteredOptions = this.assigneeFormControl.valueChanges
-      .pipe(
-        startWith(''),
-        map((value: any) => typeof value === 'string' ? value : (value as IUser).name),
-        map(name => name ? this._filter(name) : this.users$),
-        switchMap(v => v)
-      );
 
-    this.taskState$ = this.objectStateManager$.pipe(
-      startWith({ ...this.task, componentInitTask: true }),
+    this.startDate = this.task.startDate;
+    this.dueDate = this.task.dueDate;
+
+    this.taskTitleFormControl.setValue(this.task.title);
+    this.taskDescriptionFormControl.setValue(this.task.description);
+
+    this.filteredAssignee = this.assigneeFormControl.valueChanges.pipe(
+      startWith(''),
+      map((value: any) => typeof value === 'string' ? value : (value as IUser).name),
+      map(name => name ? this._filter(name) : this.users$),
+      switchMap(v => v)
+    );
+
+    const titleChangeSource = this.taskTitleFormControl.valueChanges.pipe(debounce(v => interval(1000)), map(v => ({ busy: true, title: v })));
+    const descriptionChangeSource = this.taskDescriptionFormControl.valueChanges.pipe(debounce(v => interval(1500)), map(v => ({ busy: true, description: v })));
+    this.taskState$ = merge(titleChangeSource, descriptionChangeSource, this.objectStateManager$).pipe(
+      startWith({ ...this.task }),
       distinctUntilChanged(this.areEventsSame),
       tap(v => console.log('DEBUG 0:', v)),
-      scan((value: ITask, changes: any) => this.taskUpdated(changes, value), this.task),
+      scan((value: ITask, changes: any) => ({ ...value, ...changes }), this.task),
       shareReplay(1)
     );
 
@@ -76,16 +87,6 @@ export class MiniTileComponent implements OnInit, OnDestroy {
     this.taskState$.pipe(first()).subscribe(t => this.taskRepo.deleteTask(t))
   }
 
-  private taskUpdated(change: any, task: ITask): ITask {
-    if ((task as any) && (task as any).componentInitTask) {
-      delete (task as any).componentInitTask;
-    } else {
-      task.busy = true;
-    }
-
-    const updateTask: ITask = { ...task, ...change }
-    return updateTask;
-  }
 
 
   private _filter(name: string): Observable<IUser[]> {
@@ -93,7 +94,7 @@ export class MiniTileComponent implements OnInit, OnDestroy {
     return this.users$.pipe(map(users => users.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)));
   }
 
-  public add(event: MatChipInputEvent, chipInput: any): void {
+  public async add(event: MatChipInputEvent, chipInput: any): Promise<void> {
     const value = (event.value || '').trim();
 
     if (!value || value === '#') {

@@ -1,18 +1,22 @@
 <!-- <mat-progress-bar *ngIf='taskState$ | async | taskBusy' id='navi' class='loading' color="primary" mode='indeterminate'>
 </mat-progress-bar> -->
 
-<mat-card class="flex-v main-container" style="margin: auto;">
+<mat-card class="flex-v main-container"
+          style="margin: auto;">
 
   <!-- TITLE -->
   <div class='flex-h flex-space-in-between flex-v-center'>
     <mat-form-field style="width: 80%;">
       <mat-label>Task Description</mat-label>
-      <input matInput [value]='(taskState$ | async)?.title' #descriptionInput
-        (keyup)='objectStateManager$.next( { title:descriptionInput.value } )'>
+      <input matInput
+             [formControl]='taskTitleFormControl'>
     </mat-form-field>
 
-    <a matTooltip='Task Id' mat-button color='primary' aria-label="Open Task"
-      [routerLink]="['/task', (taskState$ | async)?.id]">
+    <a matTooltip='Task Id'
+       mat-button
+       color='primary'
+       aria-label="Open Task"
+       [routerLink]="['/task', (taskState$ | async)?.id]">
       {{ (taskState$ | async)?.id }}
     </a>
 
@@ -20,28 +24,42 @@
 
   <!-- DATE -->
   <div>
-    <mat-form-field appearance="fill" style="margin-right: 20px;">
+    <mat-form-field appearance="fill"
+                    style="margin-right: 20px;">
       <mat-label>Start Date</mat-label>
-      <input matInput [matDatepicker]="startdatepicker" [(ngModel)]="startDate">
-      <mat-datepicker-toggle matSuffix [for]="startdatepicker"></mat-datepicker-toggle>
+      <input matInput
+             [matDatepicker]="startdatepicker"
+             [(ngModel)]="startDate">
+      <mat-datepicker-toggle matSuffix
+                             [for]="startdatepicker"></mat-datepicker-toggle>
       <mat-datepicker #startdatepicker>
         <mat-datepicker-actions>
-          <button mat-button matDatepickerCancel>Cancel</button>
-          <button mat-raised-button color="primary" matDatepickerApply
-            (click)='objectStateManager$.next( { startDate:startDate } )'>Apply</button>
+          <button mat-button
+                  matDatepickerCancel>Cancel</button>
+          <button mat-raised-button
+                  color="primary"
+                  matDatepickerApply
+                  (click)='objectStateManager$.next( { startDate:startDate, busy:true } )'>Apply</button>
         </mat-datepicker-actions>
       </mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="example-form-field">
+    <mat-form-field appearance="fill"
+                    class="example-form-field">
       <mat-label>End Date</mat-label>
-      <input matInput [matDatepicker]="enddatepicker" [(ngModel)]="dueDate">
-      <mat-datepicker-toggle matSuffix [for]="enddatepicker"></mat-datepicker-toggle>
+      <input matInput
+             [matDatepicker]="enddatepicker"
+             [(ngModel)]="dueDate">
+      <mat-datepicker-toggle matSuffix
+                             [for]="enddatepicker"></mat-datepicker-toggle>
       <mat-datepicker #enddatepicker>
         <mat-datepicker-actions>
-          <button mat-button matDatepickerCancel>Cancel</button>
-          <button mat-raised-button color="primary" matDatepickerApply
-            (click)='objectStateManager$.next( { dueDate:dueDate } )'>Apply</button>
+          <button mat-button
+                  matDatepickerCancel>Cancel</button>
+          <button mat-raised-button
+                  color="primary"
+                  matDatepickerApply
+                  (click)='objectStateManager$.next( { dueDate:dueDate, busy:true } )'>Apply</button>
         </mat-datepicker-actions>
       </mat-datepicker>
     </mat-form-field>
@@ -51,9 +69,15 @@
   <form>
     <mat-form-field>
       <mat-label>Primary Assignee</mat-label>
-      <input type="text" matInput [formControl]="assigneeFormControl" [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='onAssigneeSelected($event)'>
-        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      <input type="text"
+             matInput
+             [formControl]="assigneeFormControl"
+             [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete"
+                        [displayWith]="displayFn"
+                        (optionSelected)='onAssigneeSelected($event)'>
+        <mat-option *ngFor="let option of filteredAssignee | async"
+                    [value]="option">
           {{option.name}}
         </mat-option>
       </mat-autocomplete>
@@ -61,42 +85,58 @@
   </form>
 
   <!-- DESCRIPTION -->
-  <mat-form-field appearance="fill" style="width: 100%;">
+  <mat-form-field appearance="fill"
+                  style="width: 100%;">
     <mat-label>Task Description</mat-label>
-    <textarea matInput #description [value]='(taskState$ | async)?.description'
-      (keyup)='objectStateManager$.next( {description : description.value} )'></textarea>
+    <textarea matInput
+              [formControl]='taskDescriptionFormControl'></textarea>
   </mat-form-field>
 
   <!-- BADGES -->
   <div class='flex-h flex-space-in-between flex-v-center'>
-    <div [matBadge]='(taskState$ | async)?.attachements?.length' matBadgeSize='small' matBadgeOverlap="false">Attached
-      Documents</div>
-    <div [matBadge]='(taskState$ | async)?.comments?.length' matBadgeSize='small' matBadgeOverlap="false">Comments
+    <div [matBadge]='(taskState$ | async)?.attachements?.length'
+         matBadgeSize='small'
+         matBadgeOverlap="false">Attached Documents</div>
+    <div [matBadge]='(taskState$ | async)?.comments?.length'
+         matBadgeSize='small'
+         matBadgeOverlap="false">Comments
     </div>
-    <div style="margin-right: 20px" [matBadge]='(taskState$ | async)?.hashTags?.length' matBadgeSize='small'
-      matBadgeOverlap="false">Tags</div>
+    <div style="margin-right: 20px"
+         [matBadge]='(taskState$ | async)?.hashTags?.length'
+         matBadgeSize='small'
+         matBadgeOverlap="false">Tags</div>
   </div>
 
   <!-- HASHTAGS -->
   <div>
     <mat-form-field style="width: 100%;">
       <mat-label>HashTags</mat-label>
-      <mat-chip-list #chipList aria-label="HashTag selection">
-        <mat-chip *ngFor="let hashTag of (taskState$ | async)?.hashTags" removable='true' (removed)="remove(hashTag)"
-          [matTooltip]='hashTag'>
+      <mat-chip-list #chipList
+                     aria-label="HashTag selection">
+        <mat-chip *ngFor="let hashTag of (taskState$ | async)?.hashTags"
+                  removable='true'
+                  (removed)="remove(hashTag)"
+                  [matTooltip]='hashTag'>
           {{hashTag | limitTextLength:15}}
-          <mat-icon matChipRemove *ngIf='true'>cancel</mat-icon>
+          <mat-icon matChipRemove
+                    *ngIf='true'>cancel</mat-icon>
         </mat-chip>
-        <input placeholder="New HashTag..." [matChipInputFor]="chipList" #chipInput
-          [matChipInputSeparatorKeyCodes]='separatorKeysCodes' [matChipInputAddOnBlur]='true'
-          (matChipInputTokenEnd)="add($event,chipInput);">
+        <input placeholder="New HashTag..."
+               [matChipInputFor]="chipList"
+               #chipInput
+               [matChipInputSeparatorKeyCodes]='separatorKeysCodes'
+               [matChipInputAddOnBlur]='true'
+               (matChipInputTokenEnd)="add($event,chipInput);">
       </mat-chip-list>
     </mat-form-field>
   </div>
 
   <!-- ACTION BUTTONS -->
   <mat-card-actions>
-    <button mat-button color='accent' (click)='onDeleteTask()'>DELETE</button>
-    <button mat-button matTooltip='Send follow up to assignee'>FOLLOW UP</button>
+    <button mat-button
+            color='accent'
+            (click)='onDeleteTask()'>DELETE</button>
+    <button mat-button
+            matTooltip='Send follow up to assignee'>FOLLOW UP</button>
   </mat-card-actions>
 </mat-card>

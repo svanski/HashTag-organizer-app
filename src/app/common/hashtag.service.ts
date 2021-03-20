@@ -21,8 +21,6 @@ export class HashTagService {
             curryStringArrayProperyTypeHandler('assignee')
         ]
 
-
-
         for (let key of Object.keys(task)) {
             const res = handlers.reduce((res: string[] | null, func) => res ? res : func(task, key as any, task.hashTags.slice()), null);
 
@@ -51,14 +49,12 @@ function sortFunc(a: string, b: string): number {
     return (a as any) - (b as any);
 }
 
-
-
-
 function stringPropertyHandler(obj: ITask, propertyName: keyof ITask, hashTags: string[]): string[] | null {
     const hashTagPrefix = `#${propertyName}-`;
     const filteredHashTags = hashTags.filter(v => !v.startsWith(hashTagPrefix));
 
-    const newHashTag = obj[propertyName] ? `${hashTagPrefix}${obj[propertyName]}` : null;
+    const val = obj[propertyName]?.toString().trim()
+    const newHashTag = val ? `${hashTagPrefix}${val}` : null;
 
     return newHashTag ? [...filteredHashTags, newHashTag] : filteredHashTags;
 }
@@ -77,7 +73,10 @@ function dateTimePropertyHandler(obj: ITask, propertyName: keyof ITask, hashTags
     const hashTagPrefix = `#${propertyName}-`;
     const filteredHashTags = hashTags.filter(v => !v.startsWith(hashTagPrefix));
 
-    const value = obj[propertyName] as Date;
+    let value = obj[propertyName] as Date;
+    if (typeof value !== typeof Date) {
+        value = new Date(value);
+    }
     const newHashTag = value ? `${hashTagPrefix}${value.getMonth()}/${value.getDate()}/${value.getFullYear()}` : null;
 
     return newHashTag ? [...filteredHashTags, newHashTag] : filteredHashTags;
