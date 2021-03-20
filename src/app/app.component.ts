@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthService } from './common/autho.service';
 
 @Component({
@@ -7,10 +9,15 @@ import { AuthService } from './common/autho.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-  title = 'hashtag-planner-app';
+export class AppComponent {
 
-  constructor(private authoService: AuthService, private router: Router) { }
+  public isLoggedIn$: Observable<boolean> = EMPTY;
+  public logInUserInitial$: Observable<string> = EMPTY;
 
-  ngOnInit(): void { }
+  constructor(authService: AuthService, private router: Router) {
+    this.isLoggedIn$ = authService.isUserLoggedIn();
+    this.logInUserInitial$ = authService.getLoggedInUser().pipe(map(user => user ? user.email[0].toUpperCase() : 'Err'));
+  }
+
+  public logIn(): void { this.router.navigate(["login"]); }
 }

@@ -12,7 +12,7 @@ export interface ITask {
 }
 
 export interface IUser {
-    id: number,
+    id: Number,
     email: string,
     name: string,
     selected: boolean
