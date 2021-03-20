@@ -1,16 +1,21 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, of } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { filter, map } from "rxjs/operators";
-import { ITask, IUser } from "./models";
+import { IUser } from "./models";
+import { SessionFacade } from "./session.facade";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-    private loggedInUser: BehaviorSubject<IUser | undefined> = new BehaviorSubject<IUser | undefined>({ name: 'D', selected: false, id: 1234, email: 'D@d.com' });
-
+    private readonly loggedInUser: BehaviorSubject<IUser | undefined>
+    private readonly sessionFacade = SessionFacade<IUser>('PlannerAppAuthService');
 
     // [x: string]: any;
 
+    constructor() {
+        const user = this.sessionFacade.load();
+        this.loggedInUser = new BehaviorSubject<IUser | undefined>(user);
+    }
 
     public isUserLoggedIn(): Observable<boolean> { return this.loggedInUser.pipe(map(v => !!v)); }
 
@@ -18,15 +23,11 @@ export class AuthService {
 
 
     public logIn(userName: string, password: string): void {
-        this.loggedInUser.next({ name: userName, email: userName, id: this.hashCode(userName), selected: false })
+        this.loggedInUser.next({ name: userName, email: userName, id: this.hashCode(userName), selected: false });
+        this.sessionFacade.save(this.loggedInUser.value as IUser)
     }
 
     private hashCode(s: string): Number {
         return s.split("").reduce(function (a, b) { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0);
     }
-
-
-
-
-
 }
