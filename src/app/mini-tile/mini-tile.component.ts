@@ -9,6 +9,7 @@ import { ITask, IUser } from '../common/models';
 import { HashTagService } from '../common/hashtag.service';
 import { VIEW_TASK_DETAILS_MEDIATOR } from '../common/actions.mediator';
 import { UsersRepository } from '../common/users.repository';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -38,7 +39,7 @@ export class MiniTileComponent implements OnInit {
   }
 
 
-  constructor(private hashTagService: HashTagService, @Inject(VIEW_TASK_DETAILS_MEDIATOR) private taskSelectionMediator: Observer<ITask>, userRepository: UsersRepository) {
+  constructor(private hashTagService: HashTagService, userRepository: UsersRepository, private router: Router) {
     this.objectStateManager$ = new Subject<any>();
     this.users$ = userRepository.getUsers();
   }
@@ -65,7 +66,7 @@ export class MiniTileComponent implements OnInit {
   }
 
   public onViewTaskDetails(): void {
-    this.taskState$.pipe(first()).subscribe(item => this.taskSelectionMediator.next(item))
+    // this.taskState$.pipe(first()).subscribe(item =>  this.router.navigate(["task"], { queryParams: { continueUrl: route.url } });)
   }
 
   public onAssigneeSelected(event: MatAutocompleteSelectedEvent) {

@@ -6,7 +6,11 @@ import { ITask, IUser } from "./models";
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-    private loggedInUser: BehaviorSubject<IUser | undefined> = new BehaviorSubject<IUser | undefined>(undefined);
+    private loggedInUser: BehaviorSubject<IUser | undefined> = new BehaviorSubject<IUser | undefined>({ name: 'D', selected: false, id: 1234, email: 'D@d.com' });
+
+
+    // [x: string]: any;
+
 
     public isUserLoggedIn(): Observable<boolean> { return this.loggedInUser.pipe(map(v => !!v)); }
 
@@ -20,6 +24,8 @@ export class AuthService {
     private hashCode(s: string): Number {
         return s.split("").reduce(function (a, b) { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0);
     }
+
+
 
 
 

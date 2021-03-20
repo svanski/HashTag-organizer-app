@@ -8,9 +8,9 @@
         (keyup)='objectStateManager$.next( { title:descriptionInput.value } )'>
     </mat-form-field>
 
-    <button mat-mini-fab color='primary' aria-label="Open Task" (click)='onViewTaskDetails()'>
+    <a mat-mini-fab color='primary' aria-label="Open Task" [routerLink]="['/task', 111]">
       <mat-icon>open_in_new</mat-icon>
-    </button>
+    </a>
   </div>
 
   <!-- DATE -->

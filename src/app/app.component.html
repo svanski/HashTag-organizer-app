@@ -8,8 +8,14 @@
 
     <button *ngIf='isLoggedIn$ | async' style="margin-top: -10px; margin-right: 10px"
       mat-fab>{{logInUserInitial$ | async}}</button>
-    <button *ngIf='!(isLoggedIn$ | async)' style="margin-right: 10px;" (click)='logIn()' mat-raised-button
-      color='accent'>Log In</button>
+
+    <!-- <button *ngIf='!(isLoggedIn$ | async)' style="margin-right: 10px;" (click)='logIn()' mat-raised-button
+      color='accent'>Log In</button> -->
+
+    <a *ngIf='!(isLoggedIn$ | async)' style="margin-right: 10px;" mat-raised-button color='accent' aria-label="LogIn"
+      [routerLink]="['/login']">
+      Log In
+    </a>
   </div>
 
 </mat-card>
