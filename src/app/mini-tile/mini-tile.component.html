@@ -47,7 +47,7 @@
   <!-- ASSIGNEE -->
   <form>
     <mat-form-field>
-      <mat-label>Assignee(s)</mat-label>
+      <mat-label>Assignee</mat-label>
       <input type="text" matInput [formControl]="assigneeFormControl" [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='onAssigneeSelected($event)'>
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
@@ -56,6 +56,30 @@
       </mat-autocomplete>
     </mat-form-field>
   </form>
+
+  <mat-form-field>
+    <mat-label>Assignee(s)</mat-label>
+    <mat-select [formControl]="assigneeFormControl" multiple>
+      <mat-select-trigger>
+        {{assigneeFormControl.value ? assigneeFormControl.value[0].name : ''}}
+        <span *ngIf="assigneeFormControl.value?.length > 1" class="assignee-additional-selection">
+          (+{{assigneeFormControl.value.length - 1}} {{assigneeFormControl.value?.length === 2 ? 'other' : 'others'}})
+        </span>
+      </mat-select-trigger>
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">{{option.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+
+
+
+
+
+
+
+
+
 
   <!-- DESCRIPTION -->
   <mat-form-field appearance="fill" style="width: 100%;">
