@@ -36,6 +36,7 @@ import { TasksViewComponent } from './tasks-view/tasks-view.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { LimitTextLengthPipe } from './limit-text-length.pipe';
+import { TaskBusyPipe } from './pipes/task-busy.pipe';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { LimitTextLengthPipe } from './limit-text-length.pipe';
     PageNotFoundComponent,
     TaskDetailComponent,
     LimitTextLengthPipe,
+    TaskBusyPipe,
   ],
   imports: [
     BrowserModule,

@@ -54,7 +54,7 @@ export class TasksRepository {
             const newList = this.repo.value.filter(t => t.id !== task.id).slice();
             newList.push(task);
             newList.sort((a, b) => a.id.valueOf() - b.id.valueOf());
-
+            task.busy = false;
             this.repo.next(newList);
         });
     }

@@ -3,8 +3,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { EMPTY, Observable, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, first, map, scan, shareReplay, skip, startWith, switchMap, tap } from 'rxjs/operators';
+import { animationFrameScheduler, asyncScheduler, EMPTY, Observable, Subject, Subscription } from 'rxjs';
+import { distinctUntilChanged, first, map, observeOn, scan, shareReplay, skip, startWith, subscribeOn, switchMap, take, tap } from 'rxjs/operators';
 import { ITask, IUser } from '../common/models';
 import { UsersRepository } from '../common/users.repository';
 import { TasksRepository } from '../common/tasks.repository';
@@ -31,7 +31,7 @@ export class MiniTileComponent implements OnInit, OnDestroy {
 
   public users$: Observable<IUser[]> = EMPTY;
 
-  public objectStateManager$!: Subject<any>;
+  public objectStateManager$: Subject<any>;
   private subscription: Subscription = Subscription.EMPTY;
 
 
@@ -50,7 +50,7 @@ export class MiniTileComponent implements OnInit, OnDestroy {
       );
 
     this.taskState$ = this.objectStateManager$.pipe(
-      startWith(this.task),
+      startWith({ ...this.task, componentInitTask: true }),
       distinctUntilChanged(this.areEventsSame),
       tap(v => console.log('DEBUG 0:', v)),
       scan((value: ITask, changes: any) => this.taskUpdated(changes, value), this.task),
@@ -77,6 +77,12 @@ export class MiniTileComponent implements OnInit, OnDestroy {
   }
 
   private taskUpdated(change: any, task: ITask): ITask {
+    if ((task as any) && (task as any).componentInitTask) {
+      delete (task as any).componentInitTask;
+    } else {
+      task.busy = true;
+    }
+
     const updateTask: ITask = { ...task, ...change }
     return updateTask;
   }
