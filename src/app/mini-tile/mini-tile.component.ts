@@ -6,7 +6,6 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { EMPTY, Observable, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, first, map, scan, shareReplay, skip, startWith, switchMap, tap } from 'rxjs/operators';
 import { ITask, IUser } from '../common/models';
-import { HashTagService } from '../common/hashtag.service';
 import { UsersRepository } from '../common/users.repository';
 import { TasksRepository } from '../common/tasks.repository';
 
@@ -100,7 +99,6 @@ export class MiniTileComponent implements OnInit, OnDestroy {
       this.objectStateManager$.next({ hashTags: [hashTag, ...item.hashTags] })
       chipInput.value = ''
     });
-
   }
 
   public remove(hashTag: string): void {
