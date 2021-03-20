@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, of } from "rxjs";
 import { first, map } from "rxjs/operators";
 import { AuthService } from "./autho.service";
 import { HashTagService } from "./hashtag.service";
+import { HashTagsRepository } from "./hashtags.repository";
 import { ITask } from "./models";
 import { SessionFacade } from "./session.facade";
 
@@ -11,7 +12,7 @@ export class TasksRepository {
     private readonly repo: BehaviorSubject<ITask[]>;
     private readonly sessionFacade = SessionFacade<ITask[]>('PlannerAppTasks');
 
-    constructor(private authService: AuthService, private hashTagService: HashTagService) {
+    constructor(private authService: AuthService, private hashTagService: HashTagService, private hashTagsRepository: HashTagsRepository) {
         const tasks = this.sessionFacade.load() ?? [];
         this.repo = new BehaviorSubject<ITask[]>(tasks);
 
@@ -56,6 +57,8 @@ export class TasksRepository {
             newList.sort((a, b) => a.id.valueOf() - b.id.valueOf());
             task.busy = false;
             this.repo.next(newList);
+
+            this.hashTagsRepository.addHashTags(...task.hashTags);
         });
     }
 
