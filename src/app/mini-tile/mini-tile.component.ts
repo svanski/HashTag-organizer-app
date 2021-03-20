@@ -85,15 +85,9 @@ export class MiniTileComponent implements OnInit {
   }
 
 
-  public _filter(name: string): Observable<IUser[]> {
+  private _filter(name: string): Observable<IUser[]> {
     const filterValue = name.toLowerCase();
     return this.users$.pipe(map(users => users.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)));
-  }
-
-  public filterOptione(search: any) {
-    console.log('filterOptione=>', search);
-
-
   }
 
   public add(event: MatChipInputEvent, chipInput: any): void {
