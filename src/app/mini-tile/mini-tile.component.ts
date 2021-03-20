@@ -3,8 +3,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { animationFrameScheduler, asyncScheduler, EMPTY, interval, merge, Observable, Subject, Subscription } from 'rxjs';
-import { combineAll, debounce, distinctUntilChanged, first, map, observeOn, scan, shareReplay, skip, startWith, subscribeOn, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { EMPTY, interval, merge, Observable, Subject, Subscription } from 'rxjs';
+import { debounce, distinctUntilChanged, first, map, scan, shareReplay, skip, startWith, switchMap, tap } from 'rxjs/operators';
 import { ITask, IUser } from '../common/models';
 import { UsersRepository } from '../common/users.repository';
 import { TasksRepository } from '../common/tasks.repository';
@@ -87,14 +87,12 @@ export class MiniTileComponent implements OnInit, OnDestroy {
     this.taskState$.pipe(first()).subscribe(t => this.taskRepo.deleteTask(t))
   }
 
-
-
   private _filter(name: string): Observable<IUser[]> {
     const filterValue = name.toLowerCase();
     return this.users$.pipe(map(users => users.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)));
   }
 
-  public async add(event: MatChipInputEvent, chipInput: any): Promise<void> {
+  public add(event: MatChipInputEvent, chipInput: any): void {
     const value = (event.value || '').trim();
 
     if (!value || value === '#') {
