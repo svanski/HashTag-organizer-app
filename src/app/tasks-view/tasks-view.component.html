@@ -1,15 +1,20 @@
-<div style="margin: auto; width: 97%; margin-top: 20px; margin-bottom: 20px; align-items: center;" class='flex-h'>
+<div style="margin: auto; width: 97%; margin-top: 20px; margin-bottom: 20px; align-items: center;"
+     class='flex-h'>
   <app-search-bar id='search-container'></app-search-bar>
   <div style="margin-left: 20px;">
 
     <button mat-button>Save filters</button>
     <button mat-button>Update filter profile</button>
-    <button mat-button color='accent' (click)='onAddNewTask()'> Add Task</button>
+    <button mat-button
+            color='accent'
+            (click)='onAddNewTask()'> Add Task</button>
 
   </div>
 
 </div>
 
 <div id='tiles-container'>
-  <app-mini-tile class='task-tile' *ngFor='let item of tasks | async' [task]='item'></app-mini-tile>
+  <app-mini-tile class='task-tile'
+                 *ngFor='let item of tasks | async'
+                 [task]='item'></app-mini-tile>
 </div>

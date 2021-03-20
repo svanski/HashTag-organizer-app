@@ -1,8 +1,14 @@
 <mat-form-field class="example-form-field">
-    <mat-label>Search #: #assignee-userName #startdate-today etc...</mat-label>
-    <input matInput type="text" [(ngModel)]="searchText">
-    <button mat-button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear" (click)="searchText=''">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
-  
+  <mat-label>Search #: #assignee-userName #startdate-today etc...</mat-label>
+  <input matInput
+         type="text"
+         [(ngModel)]="searchText">
+  <button mat-button
+          *ngIf="searchText"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="searchText=''">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
