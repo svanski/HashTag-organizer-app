@@ -65,10 +65,6 @@ export class MiniTileComponent implements OnInit {
     return user && user.name ? user.name : '';
   }
 
-  public onViewTaskDetails(): void {
-    // this.taskState$.pipe(first()).subscribe(item =>  this.router.navigate(["task"], { queryParams: { continueUrl: route.url } });)
-  }
-
   public onAssigneeSelected(event: MatAutocompleteSelectedEvent) {
     this.taskState$.pipe(first()).subscribe(v => this.objectStateManager$.next({ assignee: [(event.option.value as IUser).email] }))
   }
