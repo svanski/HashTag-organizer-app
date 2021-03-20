@@ -19,7 +19,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSelectModule } from '@angular/material/select';
 
 import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './log-in/log-in.component';
@@ -65,8 +64,7 @@ import { LimitTextLengthPipe } from './limit-text-length.pipe';
     MatCheckboxModule,
     MatBadgeModule,
     MatChipsModule,
-    MatTooltipModule,
-    MatSelectModule
+    MatTooltipModule
   ],
   providers: [
     { provide: VIEW_TASK_DETAILS_MEDIATOR, useValue: new Subject<ITask | undefined>() }
