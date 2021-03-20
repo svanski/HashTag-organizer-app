@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './common/autho.service';
@@ -14,10 +13,8 @@ export class AppComponent {
   public isLoggedIn$: Observable<boolean> = EMPTY;
   public logInUserInitial$: Observable<string> = EMPTY;
 
-  constructor(authService: AuthService, private router: Router) {
+  constructor(authService: AuthService) {
     this.isLoggedIn$ = authService.isUserLoggedIn();
     this.logInUserInitial$ = authService.getLoggedInUser().pipe(map(user => user ? user.email[0].toUpperCase() : 'Err'));
   }
-
-  public logIn(): void { this.router.navigate(["login"]); }
 }
