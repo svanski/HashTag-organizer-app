@@ -1,5 +1,7 @@
+import { Injectable } from "@angular/core";
 import { ITask } from "./models";
 
+@Injectable({ providedIn: 'root' })
 export class HashTagService {
 
     public recalculateHashTags(task: ITask): void {

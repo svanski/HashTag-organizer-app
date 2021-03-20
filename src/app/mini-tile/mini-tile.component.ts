@@ -3,8 +3,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { EMPTY, Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, first, map, scan, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
+import { EMPTY, Observable, Subject, Subscription } from 'rxjs';
+import { distinctUntilChanged, first, map, scan, shareReplay, skip, startWith, switchMap, tap } from 'rxjs/operators';
 import { ITask, IUser } from '../common/models';
 import { HashTagService } from '../common/hashtag.service';
 import { UsersRepository } from '../common/users.repository';
@@ -14,10 +14,9 @@ import { TasksRepository } from '../common/tasks.repository';
 @Component({
   selector: 'app-mini-tile',
   templateUrl: './mini-tile.component.html',
-  styleUrls: ['./mini-tile.component.css'],
-  providers: [HashTagService]
+  styleUrls: ['./mini-tile.component.css']
 })
-export class MiniTileComponent implements OnInit {
+export class MiniTileComponent implements OnInit, OnDestroy {
 
   @Input('task') public task!: ITask;
   @Input('isLargeItem') public isLargeItem: boolean = false;
@@ -34,12 +33,10 @@ export class MiniTileComponent implements OnInit {
   public users$: Observable<IUser[]> = EMPTY;
 
   public objectStateManager$!: Subject<any>;
-  private userService = {
-    getCurrentUser(): IUser { return ({ id: 0, email: '', name: 'Mary', selected: false }) }
-  }
+  private subscription: Subscription = Subscription.EMPTY;
 
 
-  constructor(private hashTagService: HashTagService, userRepository: UsersRepository, private taskRepo: TasksRepository) {
+  constructor(userRepository: UsersRepository, private taskRepo: TasksRepository) {
     this.objectStateManager$ = new Subject<any>();
     this.users$ = userRepository.getUsers();
   }
@@ -60,6 +57,12 @@ export class MiniTileComponent implements OnInit {
       scan((value: ITask, changes: any) => this.taskUpdated(changes, value), this.task),
       shareReplay(1)
     );
+
+    this.subscription = this.taskState$.pipe(skip(1)).subscribe(t => this.taskRepo.update(t));
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   public displayFn(user: any): string {
@@ -75,10 +78,7 @@ export class MiniTileComponent implements OnInit {
   }
 
   private taskUpdated(change: any, task: ITask): ITask {
-    const updateTask: ITask = { ...task, ...change, lastModifyDate: new Date(), lastModifyUserEmail: this.userService.getCurrentUser().email }
-
-    this.hashTagService.recalculateHashTags(updateTask)
-
+    const updateTask: ITask = { ...task, ...change }
     return updateTask;
   }
 
@@ -91,15 +91,13 @@ export class MiniTileComponent implements OnInit {
   public add(event: MatChipInputEvent, chipInput: any): void {
     const value = (event.value || '').trim();
 
-    if (!value) {
+    if (!value || value === '#') {
       return;
     }
 
     this.taskState$.pipe(first()).subscribe(item => {
-
       const hashTag = value.startsWith('#') ? value : `#${value}`;
-      item.hashTags.push(hashTag);
-      this.hashTagService.recalculateHashTags(item);
+      this.objectStateManager$.next({ hashTags: [hashTag, ...item.hashTags] })
       chipInput.value = ''
     });
 
