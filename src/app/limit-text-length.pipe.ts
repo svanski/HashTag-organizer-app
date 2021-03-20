@@ -8,7 +8,7 @@ export class LimitTextLengthPipe implements PipeTransform {
       return text;
     }
 
-    return `${text.slice(0, maxCharCount.valueOf())}...`;
+    return text.length > maxCharCount ? `${text.slice(0, maxCharCount.valueOf())}...` : text;
   }
 
 }
