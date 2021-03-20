@@ -57,6 +57,15 @@
     </mat-form-field>
   </form>
 
+  <mat-select multiple>
+    <mat-form-field>
+      <input matInput placeholer="Search" #searchInMatSelect (input)="filterOptione(searchInMatSelect.value)" />
+    </mat-form-field>
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{option.name}}
+    </mat-option>
+  </mat-select>
+
   <!-- DESCRIPTION -->
   <mat-form-field appearance="fill" style="width: 100%;">
     <mat-label>Task Description</mat-label>
