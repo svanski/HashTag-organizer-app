@@ -22,6 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './log-in/log-in.component';
@@ -72,7 +73,8 @@ import { TaskBusyPipe } from './pipes/task-busy.pipe';
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatToolbarModule
   ],
   providers: [
     { provide: VIEW_TASK_DETAILS_MEDIATOR, useValue: new Subject<ITask | undefined>() }

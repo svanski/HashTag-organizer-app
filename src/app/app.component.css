@@ -5,3 +5,7 @@ mat-card {
   font-family: "Lucida Console", "Courier New", monospace;
   font-size: x-large;
 }
+
+.example-spacer {
+  flex: 1 auto 1;
+}

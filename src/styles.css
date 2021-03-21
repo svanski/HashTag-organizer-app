@@ -36,3 +36,15 @@ mat-mini-fab {
   width: 10px;
   transform: scale(-2);
 }
+
+
+/* MARGINS */
+
+.margin-left-md {
+  margin-left: 20px;
+}
+
+
+.margin-right-sm {
+  margin-left: 10px;
+}

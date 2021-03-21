@@ -1,21 +1,50 @@
-<mat-card color='primary'>
+<mat-toolbar color='primary'
+             class='flex-h flex-space-in-between flex-v-center'>
+  <span class='margin-left-md'>#Planner App</span>
 
-  <div class='flex-h flex-space-in-between flex-v-center'>
 
-    <mat-card-header>
-      <mat-card-title># Planner App</mat-card-title>
-    </mat-card-header>
-
-    <button *ngIf='isLoggedIn$ | async' style="margin-top: -10px; margin-right: 10px"
-      mat-fab>{{logInUserInitial$ | async}}</button>
-
-    <a *ngIf='!(isLoggedIn$ | async)' style="margin-right: 10px;" mat-raised-button color='accent' aria-label="LogIn"
-      [routerLink]="['/login']">
-      Log In
+  <div>
+    <a class='margin-right-sm'
+       mat-button
+       aria-label="Home"
+       [routerLink]="['/home']">
+      HOME
+    </a>
+    <a class='margin-right-sm'
+       mat-button
+       aria-label="Tasks"
+       [routerLink]="['/tasks']">
+      TASKS
+    </a>
+    <a class='margin-right-sm'
+       mat-button
+       aria-label="HashTag Management"
+       [routerLink]="['/tags']">
+      #
+    </a>
+    <a class='margin-right-sm'
+       mat-button
+       aria-label="User management"
+       [routerLink]="['/users']">
+      USERS
     </a>
   </div>
 
-</mat-card>
+  <button *ngIf='isLoggedIn$ | async'
+          class='margin-right-sm'
+          style="margin-top: -10px"
+          mat-fab>{{logInUserInitial$ | async}}</button>
+
+  <a *ngIf='!(isLoggedIn$ | async)'
+     style="margin-right: 10px;"
+     mat-raised-button
+     color='accent'
+     aria-label="LogIn"
+     [routerLink]="['/login']">
+    Log In
+  </a>
+
+</mat-toolbar>
 
 <div>
   <router-outlet></router-outlet>
