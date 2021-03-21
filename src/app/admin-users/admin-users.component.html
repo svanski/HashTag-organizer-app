@@ -1,1 +1,28 @@
-<p>admin-users works!</p>
+<h1>USER MANAGEMENT SCREEN - IN PROGRESS</h1>
+
+<div>
+  <button mat-raised-button
+          (click)='onUserAdd(nameInput.value,emailInput.value,permissionsInput.value)'
+          style="margin-left: 20px;">Add</button>
+  <span style="margin-left: 20px;">Name: <input #nameInput
+           type='text'> </span>
+  <span style="margin-left: 20px;">Email: <input #emailInput
+           type='text'> </span>
+  <span style="margin-left: 20px;">Permissions CSV: <input #permissionsInput
+           type='text'> </span>
+</div>
+
+<div *ngFor='let item of users$ | async'
+     style="margin-left: 20px;">
+
+  <span>
+    <button mat-button
+            (click)='onDelete(item)'
+            color='accent'>Delete</button>
+  </span>
+  <span>{{item.id}}</span>
+  <span style="margin-left: 40px">{{item.name}}</span>
+  <span style="margin-left: 40px">{{item.email}}</span>
+  <span style="margin-left: 40px">{{item.permissions}}</span>
+
+</div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, first } from 'rxjs/operators';
 import { AuthService } from '../common/autho.service';
+import { UsersRepository } from '../common/users.repository';
 
 @Component({
   selector: 'app-log-in',
@@ -18,7 +19,8 @@ export class LogInComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private userRepo: UsersRepository) { }
 
   ngOnInit(): void {
 
@@ -37,6 +39,11 @@ export class LogInComponent implements OnInit {
   public onLogIn(userName: string, password: string): void {
     this.authService.logIn(userName, password);
     this.ngOnInit();
+  }
+
+  public onSingUp(userName: string, password: string): void {
+    this.userRepo.addUser({ id: Date.now(), email: userName, name: userName, permissions: ['admin'], selected: false });
+    this.onLogIn(userName, password);
   }
 
 }
