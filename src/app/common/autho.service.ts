@@ -23,7 +23,7 @@ export class AuthService {
 
 
     public logIn(userName: string, password: string): void {
-        this.loggedInUser.next({ name: userName, email: userName, id: this.hashCode(userName), selected: false });
+        this.loggedInUser.next({ name: userName, email: userName, id: this.hashCode(userName), selected: false, permissions: ['admin'] });
         this.sessionFacade.save(this.loggedInUser.value as IUser)
     }
 

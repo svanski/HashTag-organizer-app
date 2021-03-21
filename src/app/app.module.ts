@@ -38,6 +38,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { LimitTextLengthPipe } from './limit-text-length.pipe';
 import { TaskBusyPipe } from './pipes/task-busy.pipe';
+import { AdminPermissionsCheckPipe } from './pipes/admin-permissions-check.pipe';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { TaskBusyPipe } from './pipes/task-busy.pipe';
     TaskDetailComponent,
     LimitTextLengthPipe,
     TaskBusyPipe,
+    AdminPermissionsCheckPipe,
   ],
   imports: [
     BrowserModule,

@@ -18,6 +18,7 @@ export interface IUser {
     email: string,
     name: string,
     selected: boolean
+    permissions: string[];
 }
 
 export interface IComment {
