@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { filter, map, switchMap } from "rxjs/operators";
+import { filter, map, switchMap, tap } from "rxjs/operators";
 import { IUser } from "./models";
 import { SessionFacade } from "./session.facade";
 import { UsersRepository } from "./users.repository";
@@ -21,11 +21,7 @@ export class AuthService {
     public isUserLoggedIn(): Observable<boolean> { return this.getLoggedInUser().pipe(map(u => !!u)) }
 
     public getLoggedInUser(): Observable<IUser> {
-        return this.loggedInUser.pipe(
-            switchMap(user => this.userRepo.getUserById(user && user ? user.id.valueOf() : -1)),
-            map(v => v ? v as IUser : new Error("No user logged in")),
-            map(v => v as IUser) // TODO need better to handle this
-        );
+        return this.loggedInUser.pipe(switchMap(user => this.userRepo.getUserById(user && user ? user.id.valueOf() : -1)),);
     }
 
     public logIn(userName: string, password: string): void {

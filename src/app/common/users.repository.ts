@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, of } from "rxjs";
-import { map } from "rxjs/operators";
+import { BehaviorSubject, Observable, of, throwError } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
 import { IUser } from "./models";
 import { SessionFacade } from "./session.facade";
 
@@ -23,7 +23,9 @@ export class UsersRepository {
 
     public getUsers(): Observable<IUser[]> { return this.repo; }
 
-    public getUserById(userId: number): Observable<IUser | undefined> { return this.repo.pipe(map(users => users.find(u => u.id === userId))); }
+    public getUserById(userId: number): Observable<IUser> {
+        return this.repo.pipe(map(users => users.find(u => u.id === userId)), switchMap(user => user ? of(user) : throwError(`There is no user with ID:${userId}`)));
+    }
 
     public deleteUser(userId: Number) { this.repo.next(this.repo.value.filter(v => v.id !== userId)); }
 
