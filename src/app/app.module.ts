@@ -40,6 +40,7 @@ import { LimitTextLengthPipe } from './limit-text-length.pipe';
 import { TaskBusyPipe } from './pipes/task-busy.pipe';
 import { AdminPermissionsCheckPipe } from './pipes/admin-permissions-check.pipe';
 import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { ToUserInitialsPipe } from './pipes/to-user-initials.pipe';
 
 
 @NgModule({
@@ -56,6 +57,7 @@ import { AdminUsersComponent } from './admin-users/admin-users.component';
     TaskBusyPipe,
     AdminPermissionsCheckPipe,
     AdminUsersComponent,
+    ToUserInitialsPipe,
   ],
   imports: [
     BrowserModule,

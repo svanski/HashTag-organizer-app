@@ -12,18 +12,20 @@
     </a>
     <a class='margin-right-sm'
        mat-button
-       *ngIf=''
+       *ngIf='isLoggedIn$ | async'
        aria-label="Tasks"
        [routerLink]="['/tasks']">
       TASKS
     </a>
     <a class='margin-right-sm'
+       *ngIf='isLoggedIn$ | async'
        mat-button
        aria-label="HashTag Management"
        [routerLink]="['/tags']">
       #
     </a>
     <a class='margin-right-sm'
+       *ngIf='isLoggedIn$ | async'
        mat-button
        aria-label="User management"
        [routerLink]="['/users']">
@@ -34,7 +36,7 @@
   <button *ngIf='isLoggedIn$ | async'
           class='margin-right-sm'
           style="margin-top: -10px"
-          mat-fab>{{logInUserInitial$ | async}}</button>
+          mat-fab>{{logInUser$ | async | toUserInitials }}</button>
 
   <a *ngIf='!(isLoggedIn$ | async)'
      style="margin-right: 10px;"
