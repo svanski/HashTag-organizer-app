@@ -27,8 +27,8 @@ export class UsersRepository {
         return this.repo.pipe(map(users => users.find(u => u.id === userId)), switchMap(user => user ? of(user) : throwError(`There is no user with ID:${userId}`)));
     }
 
-    public getUserByEmail(email: string): Observable<IUser> {
-        return this.repo.pipe(map(users => users.find(u => u.email === email)), switchMap(user => user ? of(user) : throwError(`There is no user with ID:${email}`)));
+    public getUser(predicet: (u: IUser) => boolean): Observable<IUser> {
+        return this.repo.pipe(map(users => users.find(predicet)), switchMap(user => user ? of(user) : throwError('Did not find any user with those search criteris')));
     }
 
     public deleteUser(userId: Number) { this.repo.next(this.repo.value.filter(v => v.id !== userId)); }

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
-import { filter, first, map, switchMap, tap } from "rxjs/operators";
+import { BehaviorSubject, Observable, of } from "rxjs";
+import { catchError, first, map, switchMap } from "rxjs/operators";
 import { IUser } from "./models";
 import { SessionFacade } from "./session.facade";
 import { UsersRepository } from "./users.repository";
@@ -20,14 +20,14 @@ export class AuthService {
         this.loggedInUser.subscribe(user => this.sessionFacade.save(user))
     }
 
-    public isUserLoggedIn(): Observable<boolean> { return this.getLoggedInUser().pipe(map(u => !!u)) }
+    public isUserLoggedIn(): Observable<boolean> { return this.getLoggedInUser().pipe(map(u => !!u), catchError(err => { console.error('Is user logged in error:', err); return of(false) })) }
 
     public getLoggedInUser(): Observable<IUser> {
-        return this.loggedInUser.pipe(switchMap(user => this.userRepo.getUserById(user && user ? user.id.valueOf() : -1)),);
+        return this.loggedInUser.pipe(switchMap(user => this.userRepo.getUserById(user && user ? user.id.valueOf() : -1)));
     }
 
     public logIn(userName: string, password: string): void {
-        this.userRepo.getUserByEmail(userName).pipe(first()).subscribe(user => { this.loggedInUser.next(user); }, err => console.log('LogIn error:', err))
+        this.userRepo.getUser(u => u.name === userName).pipe(first()).subscribe(user => this.loggedInUser.next(user), err => console.error('LogIn failed:', err))
     }
 
     private hashCode(s: string): Number {
