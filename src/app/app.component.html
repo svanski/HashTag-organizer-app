@@ -1,3 +1,46 @@
+<div class="example-container"
+     [class.example-is-mobile]="mobileQuery.matches">
+
+  <!-- TOOL BAR -->
+  <mat-toolbar color="primary"
+               class="toolbar">
+
+    <button mat-icon-button
+            (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="example-app-name">#Planner App</h1>
+  </mat-toolbar>
+
+  <!-- SIDE BAR CONTENT -->
+  <mat-sidenav-container class="sidenav-container"
+                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav
+                 [mode]="mobileQuery.matches ? 'over' : 'side'"
+                 [fixedInViewport]="mobileQuery.matches"
+                 fixedTopGap="56">
+
+      <a mat-list-item
+         routerLink=".">HOME</a>
+    </mat-sidenav>
+
+    <!-- OUTLET -->
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- 
+
 <mat-card color='primary'>
 
   <div class='flex-h flex-space-in-between flex-v-center'>
@@ -6,11 +49,16 @@
       <mat-card-title># Planner App</mat-card-title>
     </mat-card-header>
 
-    <button *ngIf='isLoggedIn$ | async' style="margin-top: -10px; margin-right: 10px"
-      mat-fab>{{logInUserInitial$ | async}}</button>
+    <button *ngIf='isLoggedIn$ | async'
+            style="margin-top: -10px; margin-right: 10px"
+            mat-fab>{{logInUserInitial$ | async}}</button>
 
-    <a *ngIf='!(isLoggedIn$ | async)' style="margin-right: 10px;" mat-raised-button color='accent' aria-label="LogIn"
-      [routerLink]="['/login']">
+    <a *ngIf='!(isLoggedIn$ | async)'
+       style="margin-right: 10px;"
+       mat-raised-button
+       color='accent'
+       aria-label="LogIn"
+       [routerLink]="['/login']">
       Log In
     </a>
   </div>
@@ -19,4 +67,4 @@
 
 <div>
   <router-outlet></router-outlet>
-</div>
+</div> -->
