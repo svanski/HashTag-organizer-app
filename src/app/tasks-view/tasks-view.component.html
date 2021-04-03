@@ -23,20 +23,6 @@
     </mat-form-field>
   </form>
 
-  <!-- HASH-TAGS -->
-  <div style="flex: auto;">
-    <mat-chip-list #chipList
-                   aria-label="HashTag selection">
-      <mat-chip *ngFor="let item of selected$ | async"
-                removable='true'
-                (removed)="unselectFilterValue(item)"
-                [matTooltip]='item'>
-        {{item | limitTextLength:15}}
-        <mat-icon matChipRemove>cancel</mat-icon>
-      </mat-chip>
-    </mat-chip-list>
-  </div>
-
   <!-- ACTION BUTTONS -->
   <div id='filter-search-action-buttons'>
 
@@ -47,7 +33,21 @@
             (click)='onAddNewTask()'> Add Task</button>
 
   </div>
+</div>
 
+<!-- HASH-TAGS -->
+<div class="margin-left-md"
+     style="margin-bottom: 20px;">
+  <mat-chip-list #chipList
+                 aria-label="HashTag selection">
+    <mat-chip *ngFor="let item of selected$ | async"
+              removable='true'
+              (removed)="unselectFilterValue(item)"
+              [matTooltip]='item'>
+      {{item | limitTextLength:15}}
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+  </mat-chip-list>
 </div>
 
 
