@@ -11,6 +11,7 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+/* FLEX */
 .flex-h {
   display: flex;
   flex-direction: row;
@@ -31,13 +32,6 @@ body {
   align-items: center;
 }
 
-mat-mini-fab {
-  min-width: 1%;
-  width: 10px;
-  transform: scale(-2);
-}
-
-
 /* MARGINS */
 
 .margin-left-md {
@@ -47,4 +41,10 @@ mat-mini-fab {
 
 .margin-right-sm {
   margin-left: 10px;
+}
+
+/* MISC */
+
+.full-width {
+  width: 100%;
 }

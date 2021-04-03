@@ -1,37 +1,44 @@
 <!-- ACTION BAR -->
-<div style="margin: auto; width: 97%; margin-top: 20px; margin-bottom: 20px; align-items: center;"
-     class='flex-h'>
+<div id='search-container'
+     class='flex-h margin-left-md'>
 
-  <!-- SEARCH CONTROL -->
-  <mat-form-field id='search-container'>
-    <mat-label>HashTags</mat-label>
-    <mat-select [formControl]="hashTagsFromControl"
-                multiple>
+  <!-- FILTER / SEARCH BAR -->
+  <form id='search-bar'>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Filter Tasks</mat-label>
+      <input type="text"
+             placeholder="Search Hashtag: #duedate-2020/1/1 #urgent #open"
+             aria-label="Number"
+             matInput
+             [formControl]="searchFormControl"
+             [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption
+                        (optionSelected)='onOptionSelected($event)'
+                        #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredHashTags$ | async"
+                    [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
 
-      <!-- SEARCH BOX -->
-      <mat-form-field style="width: 100%;">
-        <mat-label>Filter</mat-label>
-        <input matInput
-               [formControl]="searchFormControl"
-               type="text">
-        <button mat-button
-                *ngIf="searchFormControl.value"
-                matSuffix
-                mat-icon-button
-                aria-label="Clear"
-                (click)="searchFormControl.reset()">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-
-
-      <mat-option *ngFor="let option of filteredOptions | async"
-                  [value]="option">{{option}}</mat-option>
-    </mat-select>
-  </mat-form-field>
+  <!-- HASH-TAGS -->
+  <div style="flex: auto;">
+    <mat-chip-list #chipList
+                   aria-label="HashTag selection">
+      <mat-chip *ngFor="let item of selected$ | async"
+                removable='true'
+                (removed)="unselectFilterValue(item)"
+                [matTooltip]='item'>
+        {{item | limitTextLength:15}}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
 
   <!-- ACTION BUTTONS -->
-  <div style="margin-left: 20px;">
+  <div id='filter-search-action-buttons'>
 
     <button mat-button>Save filters</button>
     <button mat-button>Update filter profile</button>
@@ -42,6 +49,7 @@
   </div>
 
 </div>
+
 
 <!-- TILES -->
 <div id='tiles-container'>
